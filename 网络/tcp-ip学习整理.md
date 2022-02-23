@@ -1,6 +1,6 @@
 1、以太网数据封包详情
 
-![](./数据包2.jpeg) 
+![](https://github.com/lemon19900815/misc/blob/9cbdf26a9bd50c06c2d72221ddba2d754f7bec32/%E7%BD%91%E7%BB%9C/%E6%95%B0%E6%8D%AE%E5%8C%852.jpeg) 
 
 2、以太网协议头部中的类型分为IP数据类型（0800）和ARP类型（0806）。
 
