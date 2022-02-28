@@ -1,10 +1,16 @@
 #ifndef __SORT_H__
 #define __SORT_H__
 
-void swap(int& a, int& b);
+// shuffle array a.
+void shuffle(int a[], int len);
 
-void insertSort(int arr[], int len);
+// random value[from, to].
+int randInt(int from, int to);
 
-void bubbleSort(int arr[], int len);
+void insertSort(int a[], int len);
+
+void bubbleSort(int a[], int len);
+
+void quickSort(int a[], int len);
 
 #endif // __SORT_H__
