@@ -123,6 +123,48 @@ void quickSort(int a[], int len)
 	quickSort(a, 0, len-1);
 }
 
+// 堆的左孩子节点
+inline int leftChild(int i)
+{
+	return 2*i;
+}
+
+void percolateDown(int a[], int i, int n)
+{
+	int child;
+	int tmp;
+
+	for(tmp = a[i]; leftChild(i) < n; i = child)
+	{
+		child = leftChild(i);
+		if(child != n-1 && a[child] < a[child+1])
+			child++;
+		if(tmp < a[child])
+			a[i] = a[child];
+		else
+			break;
+	}
+	a[i] = tmp;
+}
+
+void buildHeap(int a[], int len)
+{
+	for (int i = len / 2; i >= 0; --i)
+		percolateDown(a, i, len);
+}
+
+void heapSort(int a[], int len)
+{
+	// build heap.
+	buildHeap(a, len);
+
+	for (int j = len - 1; j > 0; --j)
+	{
+		swap(a[0], a[j]); // delete max.
+		percolateDown(a, 0, j);
+	}
+}
+
 // after quickSelect, a[k-1] is the top-k value.
 void quickSelect(int a[], int left, int right, int k)
 {
