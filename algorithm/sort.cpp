@@ -82,6 +82,7 @@ void quickSort(int a[], int left, int right)
 	if(left >= right)
 		return;
 
+	// median3避免最坏情况发生 O(n^2)
 	int pivot = median3(a, left, right);
 	int i = left, j = right - 1;
 
@@ -89,13 +90,27 @@ void quickSort(int a[], int left, int right)
 	{
 		while(a[++i] < pivot);
 		while(a[--j] >= pivot);
-		
+
 		if(i < j)
 			swap(a[i], a[j]);
 		else
 			break;
 	}
-	
+
+	// 不要使用该模块，否则如果a[i]==a[j]会造成死循环
+	// i = left+1,j=right-2;
+
+	// for (;;)
+	// {
+	// 	while (a[i] < pivot) --i;
+	// 	while (a[j] >= pivot) --j;
+
+	// 	if (i < j)
+	// 		swap(a[i], a[j]);
+	// 	else
+	// 		break;
+	// }
+
 	// restore pivot
 	swap(a[i], a[right-1]);
 	
@@ -106,4 +121,45 @@ void quickSort(int a[], int left, int right)
 void quickSort(int a[], int len)
 {
 	quickSort(a, 0, len-1);
+}
+
+// after quickSelect, a[k-1] is the top-k value.
+void quickSelect(int a[], int left, int right, int k)
+{
+	if (left >= right)
+		return;
+
+	int pivot = median3(a, left, right);
+	int i = left, j = right - 1;
+
+	for (;;)
+	{
+		while (a[++i] < pivot);
+		while (a[--j] >= pivot);
+
+		if (i < j)
+			swap(a[i], a[j]);
+		else
+			break;
+	}
+
+	// restore pivot
+	swap(a[i], a[right - 1]);
+
+	if(i > k)
+		quickSelect(a, left, i - 1, k);
+	else
+		quickSelect(a, i + 1, right, k);
+}
+
+void quickSelect(int a[], int len, int k)
+{
+	quickSelect(a, 0, len-1, k);
+}
+
+int topK(int a[], int len, int k)
+{
+	assert(k > 0 && k <= len);
+	quickSelect(a, len, k);
+	return a[k-1];
 }

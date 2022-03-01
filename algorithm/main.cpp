@@ -38,20 +38,19 @@ void reset(int src[], int dest[], int len)
 int main(int argc, char* argv[])
 {
 	srand(time(nullptr));
-	
+
 	std::unordered_map<std::string, std::function<void(int arr[], int len)>> sortFuncs;
 	sortFuncs["bubble"] = BIND_FUNC(bubbleSort);
 	sortFuncs["insert"] = BIND_FUNC(insertSort);
 	sortFuncs["quick"] = BIND_FUNC(quickSort);
-	
-	
+
 	// test cases
 	int cases[][7] = {
 		{1, 5, 3, 10, 2, 9, 4},
 		{4, 4, 4, 4, 7, 4, 4},
-		{4, 4, 4, 4, 4, 4, 4},
+		{4, 4, 5, 4, 8, 4, 5},
 	};
-	
+
 	for(int i = 0; i < sizeof(cases)/sizeof(cases[0]); ++i)
 	{
 		int len = 7;
@@ -64,6 +63,11 @@ int main(int argc, char* argv[])
 		delete[] dest;
 		dest = nullptr;
 	}
+
+	int arr[] = {30, 20, 5, 3, 20, 10, 99};
+	// sorted: {3, 5, 10, 20, 20, 30, 99};
+	print("before select", arr, sizeof(arr)/sizeof(arr[0]));
+	std::cout << "top-3th: " << topK(arr, sizeof(arr)/sizeof(arr[0]), 3) << std::endl;
 
 	return 0;
 }

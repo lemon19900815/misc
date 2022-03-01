@@ -13,4 +13,9 @@ void bubbleSort(int a[], int len);
 
 void quickSort(int a[], int len);
 
+// after quickSelect, a[k-1] is the top-k value.
+void quickSelect(int a[], int len, int k);
+
+int topK(int a[], int len, int k);
+
 #endif // __SORT_H__
