@@ -102,7 +102,7 @@ void quickSort(int a[], int left, int right)
 
 	// for (;;)
 	// {
-	// 	while (a[i] < pivot) --i;
+	// 	while (a[i] < pivot) ++i;
 	// 	while (a[j] >= pivot) --j;
 
 	// 	if (i < j)
