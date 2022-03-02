@@ -129,6 +129,7 @@ inline int leftChild(int i)
 	return 2*i;
 }
 
+// 下滤操作有时也叫做shitDown
 void percolateDown(int a[], int i, int n)
 {
 	int child;
@@ -149,6 +150,7 @@ void percolateDown(int a[], int i, int n)
 
 void buildHeap(int a[], int len)
 {
+	// 注意，此时我们的堆是从0开始索引的
 	for (int i = len / 2; i >= 0; --i)
 		percolateDown(a, i, len);
 }
