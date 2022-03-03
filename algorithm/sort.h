@@ -11,6 +11,8 @@ void insertSort(int a[], int len);
 
 void bubbleSort(int a[], int len);
 
+void shellSort(int a[], int len);
+
 void quickSort(int a[], int len);
 
 void heapSort(int a[], int len);

@@ -52,6 +52,22 @@ void bubbleSort(int a[], int len)
     }
 }
 
+void shellSort(int a[], int len)
+{
+	int j;
+	//for (int gap = len/2; gap > 0; gap /= 2)
+	for (int gap = len>>1; gap > 0; gap = gap>>1)
+	{
+		for(int i = gap; i < len; ++i)
+		{
+			auto tmp = a[i];
+			for (j = i; j >= gap && tmp < a[j - gap]; j -= gap)
+				a[j] = a[j-gap];
+			a[j] = tmp;
+		}
+	}
+}
+
 // return median of left, center, right.
 // order these and hide pivot.
 int median3(int a[], int left, int right)
