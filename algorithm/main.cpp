@@ -10,6 +10,19 @@
 
 //#define LOG_RESULT
 
+#define RESET "\033[0m"
+#define BLACK "\033[30m"   /* Black */
+#define RED "\033[31m"	   /* Red */
+#define GREEN "\033[32m"   /* Green */
+#define YELLOW "\033[33m"  /* Yellow */
+#define BLUE "\033[34m"	   /* Blue */
+#define MAGENTA "\033[35m" /* Magenta */
+#define CYAN "\033[36m"	   /* Cyan */
+#define WHITE "\033[37m"   /* White */
+
+#define LOG_INFO std::cout << RESET
+#define LOG_ERROR std::cout << RED
+
 // c++11
 #define BIND_FUNC(Name) std::bind(&Name, std::placeholders::_1, std::placeholders::_2)
 
@@ -19,7 +32,7 @@ void print(std::string prefix, int arr[], int len)
 	ss << prefix << ": ";
 	for(int i = 0; i < len; ++i)
 		ss << arr[i] << ", ";
-	std::cout << ss.str() << std::endl;
+	LOG_INFO << ss.str() << std::endl;
 }
 
 void test(std::string name, std::function<void(int arr[], int len)> sortFunc, int arr[], int len)
@@ -28,7 +41,7 @@ void test(std::string name, std::function<void(int arr[], int len)> sortFunc, in
 
 #ifdef LOG_RESULT
 	print("after " + name, arr, len);
-	std::cout << "===================================" << std::endl;
+	LOG_INFO << "===================================" << std::endl;
 #endif
 }
 
@@ -88,9 +101,9 @@ int main(int argc, char* argv[])
 			test(name, sortFn, dest, len);
 
 			if (!check(dest, ordered_cases[i], len))
-				std::cout << name << " -> fail." << std::endl;
+				LOG_ERROR << name << " -> fail." << std::endl;
 			else
-				std::cout << name << " -> success." << std::endl;
+				LOG_INFO << name << " -> success." << std::endl;
 		}
 		delete[] dest;
 		dest = nullptr;
@@ -101,7 +114,7 @@ int main(int argc, char* argv[])
 	int arr[] = {30, 20, 5, 3, 20, 10, 99};
 	// sorted: {3, 5, 10, 20, 20, 30, 99};
 	print("before select", arr, sizeof(arr)/sizeof(arr[0]));
-	std::cout << "top-3th: " << topK(arr, sizeof(arr)/sizeof(arr[0]), 3) << std::endl;
+	LOG_INFO << "top-3th: " << topK(arr, sizeof(arr) / sizeof(arr[0]), 3) << std::endl;
 
 	return 0;
 }
