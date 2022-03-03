@@ -183,6 +183,57 @@ void heapSort(int a[], int len)
 	}
 }
 
+// [leftPos, rightPos], [rightPos+1, rightEnd]
+void merge(int a[], int tmp[], int leftPos, int rightPos, int rightEnd)
+{
+	int i = leftPos, j = rightPos+1;
+
+	int tmpPos = leftPos;
+	while(i <= rightPos && j <= rightEnd)
+	{
+		if(a[i] <= a[j])
+			tmp[tmpPos++] = a[i++];
+		else
+			tmp[tmpPos++] = a[j++];
+	}
+
+	// copy the rest of left half.
+	while(i <= rightPos)
+		tmp[tmpPos++] = a[i++];
+
+	// copy the rest of right half.
+	while(j <= rightEnd)
+		tmp[tmpPos++] = a[j++];
+
+	// copy tmp array back.
+	while (leftPos <= rightEnd)
+	{
+		a[leftPos] = tmp[leftPos];
+		++leftPos;
+	}
+}
+
+void mergeSort(int a[], int tmp[], int left, int right)
+{
+	if(left >= right)
+		return;
+
+	int center = (left+right)/2;
+	mergeSort(a, tmp, left, center);
+	mergeSort(a, tmp, center+1, right);
+
+	merge(a, tmp, left, center, right);
+}
+
+void mergeSort(int a[], int len)
+{
+	int* tmp = new int[len];
+	mergeSort(a, tmp, 0, len-1);
+
+	delete[] tmp;
+	tmp = nullptr;
+}
+
 // after quickSelect, a[k-1] is the top-k value.
 void quickSelect(int a[], int left, int right, int k)
 {

@@ -71,6 +71,7 @@ int main(int argc, char* argv[])
 	sortFuncs["quick"] = BIND_FUNC(quickSort);
 	sortFuncs["heap"] = BIND_FUNC(heapSort);
 	sortFuncs["shell"] = BIND_FUNC(shellSort);
+	sortFuncs["merge"] = BIND_FUNC(mergeSort);
 
 	// test cases
 	int cases[][7] = {

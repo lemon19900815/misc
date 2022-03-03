@@ -17,6 +17,8 @@ void quickSort(int a[], int len);
 
 void heapSort(int a[], int len);
 
+void mergeSort(int a[], int len);
+
 // after quickSelect, a[k-1] is the top-k value.
 void quickSelect(int a[], int len, int k);
 
