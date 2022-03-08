@@ -1,7 +1,10 @@
 #include "sort.h"
 
+#include <cstdio>
 #include <cstdlib>
 #include <cassert>
+#include <iostream>
+#include <unordered_map>
 
 static void swap(int& a, int& b)
 {
@@ -259,7 +262,7 @@ void quickSelect(int a[], int left, int right, int k)
 
 	if(i > k)
 		quickSelect(a, left, i - 1, k);
-	else
+	else if(i < k)
 		quickSelect(a, i + 1, right, k);
 }
 
@@ -273,4 +276,107 @@ int topK(int a[], int len, int k)
 	assert(k > 0 && k <= len);
 	quickSelect(a, len, k);
 	return a[k-1];
+}
+
+inline int getMax(int a, int b)
+{
+	return a > b ? a : b;
+}
+
+// 连续子数组的最大和
+int maxSumOfSubArray(int a[], int len, int *left, int *right)
+{
+	// o(n^2)
+	// int sum = -100000000; // 定义一个较小的数作为基准
+
+	// for(int i = 0; i < len; ++i)
+	// {
+	// 	auto tmp_sum = 0;
+	// 	for(int j = i; j < len; ++j)
+	// 	{
+	// 		tmp_sum += a[j];
+	// 		if(tmp_sum > sum)
+	// 			sum = tmp_sum;
+	// 	}
+	// }
+
+	// return sum;
+
+	int sum = a[0];
+	int max_sum = sum;
+
+	// 最大子序列的开始和结束位置
+	int start = 0;
+	int end = 0;
+
+	// o(n)
+	for (int i = 1; i < len; ++i)
+	{
+		// 状态方程：dp(i) = max(dp(i-1)+a[i], a[i])
+		// sum = getMax(sum + a[i], a[i]);
+		// std::cout << "dp(" << i << ") = " << sum << std::endl;
+
+		if (sum + a[i] > a[i])
+		{
+			++end;
+			sum = sum + a[i];
+		}
+		else
+		{
+			start = i;
+			end = i;
+			sum = a[i];
+		}
+
+		if(sum > max_sum)
+		{
+			max_sum = sum;
+			*left = start;
+			*right = end;
+		}
+	}
+
+	return sum;
+}
+
+int findMaxSubStrLength(const std::string &in, int &start)
+{
+	if (in.length() == 0)
+		return 0;
+
+	start = 0;
+	int max_start = start;
+	int max_len = 0, cur_len = 0;
+	std::unordered_map<char, int> record;
+
+	for (int i = 0; i < in.length(); ++i)
+	{
+		auto ch = in.at(i);
+		auto itr = record.find(ch);
+
+		if (itr == record.end())
+		{
+			record[ch] = i;
+			++cur_len;
+		}
+		else
+		{
+			auto end_pos = itr->second;
+			for (int j = start; j <= end_pos; ++j)
+				record.erase(in.at(j));
+
+			record[ch] = i;
+			start = end_pos + 1;
+			cur_len = i - end_pos;
+		}
+
+		if (cur_len > max_len)
+		{
+			max_len = cur_len;
+			max_start = start;
+		}
+	}
+
+	start = max_start;
+	return max_len;
 }
