@@ -380,3 +380,25 @@ int findMaxSubStrLength(const std::string &in, int &start)
 	start = max_start;
 	return max_len;
 }
+
+int lengthOfLongestSubstring(std::string &str, int& from)
+{
+	if (str.empty())
+		return 0;
+
+	int res = 0;
+	int start = 0;
+
+	int hash[256] = {-1};
+	for (int i = 0; i < str.length(); ++i)
+	{
+		char c = str[i];
+
+		start = getMax(start, hash[c] + 1);
+		res = getMax(res, i - start + 1);
+		hash[c] = i;
+	}
+
+	from = start;
+	return res;
+}

@@ -26,9 +26,11 @@ void quickSelect(int a[], int len, int k);
 
 int topK(int a[], int len, int k);
 
-// 连续子数组的最大和
+// 连续子数组的最大和( 动态规划问题dp(i) = max(dp(i-1)+a[i], a[i]) )
 int maxSumOfSubArray(int a[], int len, int* left, int* right);
+
 // 查找不重复字符的最大连续子串的长度
 int findMaxSubStrLength(const std::string &in, int &start);
+int lengthOfLongestSubstring(std::string &str, int &from);
 
 #endif // __SORT_H__

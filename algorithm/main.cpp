@@ -132,15 +132,20 @@ int main(int argc, char* argv[])
 	LOG_INFO << "maxSumOfSubArray: arr[" << left << ", " << right << "] = " << max_sub_sum << std::endl;
 
 	int start = 0;
-	std::string a[] = { "abcaef", "abcabcbb", "bbbbbb", "pwwkew", "" };
+	std::string a[] = {"abcaef", "abcabcbb", "bbbbbb", "pwwkew", "abcab"};
 
 	int max_sub_len = 0;
 	for(int i = 0; i < 5; ++i)
 	{
 		max_sub_len = findMaxSubStrLength(a[i], start);
 		if (max_sub_len > 0)
-			LOG_INFO << a[i] << " = " << a[i].substr(start, max_sub_len) << ", count = " << max_sub_len << std::endl;
+			LOG_INFO << "findMaxSubStrLength: " << a[i] << " = " << a[i].substr(start, max_sub_len) << ", count = " << max_sub_len << std::endl;
+
+		max_sub_len = lengthOfLongestSubstring(a[i], start);
+		if (max_sub_len > 0)
+			LOG_INFO << "lengthOfLongestSubstring: " << a[i] << " = " << a[i].substr(start, max_sub_len) << ", count = " << max_sub_len << std::endl;
 	}
 
 	return 0;
 }
+
