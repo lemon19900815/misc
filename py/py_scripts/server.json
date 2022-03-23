@@ -1,0 +1,20 @@
+{
+    "dev": {
+        "database": {
+            "host": "ip",
+            "user": "username",
+            "password": "password",
+            "database": "db"
+        },
+        "server": {
+            "user": "username",
+            "passwd": "password",
+            "host": "ip",
+            "port": 22
+        },
+        "design_data": {
+            "path": "/opt/data/design/",
+            "file": "design_conf.tar.gz"
+        }
+    }
+}
