@@ -1,0 +1,220 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Creator">
+      <UniqueIdentifier>{7a298f89-eb16-49eb-a8af-67634658f574}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Creator\Singleton">
+      <UniqueIdentifier>{3a6d1d9e-86cf-4406-ba25-c4341463b091}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Creator\Factory">
+      <UniqueIdentifier>{e3882fa2-2730-489e-9b30-4b3cf584f1c0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Creator\Builder">
+      <UniqueIdentifier>{eafb7e7b-0c50-488b-945e-b2eb28b6f360}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Creator\Prototype">
+      <UniqueIdentifier>{9b3994b5-a5b2-4d42-ab61-20ed62196dd1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Structure">
+      <UniqueIdentifier>{b692ac79-1d22-437c-827e-3abcbf9c7fc3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Structure\Adapter">
+      <UniqueIdentifier>{2d10ee5c-7c97-4077-93fe-36046931790f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Structure\Bridge">
+      <UniqueIdentifier>{48f23094-ed59-4d72-a2d7-de329610a6c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Structure\Filter">
+      <UniqueIdentifier>{893738c8-edc3-4507-8754-35c784ee1508}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Structure\Composite">
+      <UniqueIdentifier>{022ca06c-cca0-46a1-81aa-9039a8830409}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Structure\Decorator">
+      <UniqueIdentifier>{910f7175-da04-4aec-9ad4-51a2afce720f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Structure\Facade">
+      <UniqueIdentifier>{0fe8ead8-0adc-4108-8ddd-0b1bf8f76062}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Structure\Flyweight">
+      <UniqueIdentifier>{48be3081-0fe0-43b9-8e08-4a9c80418a0c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Structure\Proxy">
+      <UniqueIdentifier>{f9600a5b-b187-40f7-bea8-fcfe39b1470c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Behavior">
+      <UniqueIdentifier>{16120e11-b989-4f74-b96d-90511fa9353d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Behavior\Command">
+      <UniqueIdentifier>{c83fe323-bbf5-431f-9125-a1147dc83093}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Behavior\Interpreter">
+      <UniqueIdentifier>{87bf75e7-952e-4a0e-aeb1-9d02df733898}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Behavior\Iterator">
+      <UniqueIdentifier>{afb78251-58f5-4b85-8a1e-ea1144ce6f1b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Behavior\Mediator">
+      <UniqueIdentifier>{a5874949-6134-41fa-a641-2207cc8fc2bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Behavior\Memento">
+      <UniqueIdentifier>{7cd79c37-d90b-4dbb-9d3d-2320c0fac4ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Behavior\Observer">
+      <UniqueIdentifier>{a166a8bc-2e7f-482c-a8d8-681b805a04dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Behavior\State">
+      <UniqueIdentifier>{1f7af04b-241e-420b-a87a-2d92a9856287}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Behavior\NullObject">
+      <UniqueIdentifier>{2516a217-16b7-4192-8a0c-cc05056e2753}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Behavior\Strategy">
+      <UniqueIdentifier>{9a454ea1-0f0f-4a18-98fb-982ef3611f44}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Behavior\Template">
+      <UniqueIdentifier>{68cd037f-37ac-4a38-8ced-3c011fd5337f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Behavior\Visitor">
+      <UniqueIdentifier>{3fc09c9b-a612-4990-a62c-550f72f43194}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Behavior\Chain">
+      <UniqueIdentifier>{559b9870-de80-4c23-968e-131937756cde}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Factory\shape.h">
+      <Filter>Creator\Factory</Filter>
+    </ClInclude>
+    <ClInclude Include="Factory\color.h">
+      <Filter>Creator\Factory</Filter>
+    </ClInclude>
+    <ClInclude Include="Factory\abstract_factory.h">
+      <Filter>Creator\Factory</Filter>
+    </ClInclude>
+    <ClInclude Include="Factory\producer_factory.h">
+      <Filter>Creator\Factory</Filter>
+    </ClInclude>
+    <ClInclude Include="Singleton\singleton.h">
+      <Filter>Creator\Singleton</Filter>
+    </ClInclude>
+    <ClInclude Include="Singleton\gameworld.h">
+      <Filter>Creator\Singleton</Filter>
+    </ClInclude>
+    <ClInclude Include="Builder\item.h">
+      <Filter>Creator\Builder</Filter>
+    </ClInclude>
+    <ClInclude Include="Builder\burger.h">
+      <Filter>Creator\Builder</Filter>
+    </ClInclude>
+    <ClInclude Include="Builder\packing.h">
+      <Filter>Creator\Builder</Filter>
+    </ClInclude>
+    <ClInclude Include="Builder\drinking.h">
+      <Filter>Creator\Builder</Filter>
+    </ClInclude>
+    <ClInclude Include="Builder\meal.h">
+      <Filter>Creator\Builder</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="Prototype\shape.h">
+      <Filter>Creator\Prototype</Filter>
+    </ClInclude>
+    <ClInclude Include="Adapter\mediaplayer.h">
+      <Filter>Structure\Adapter</Filter>
+    </ClInclude>
+    <ClInclude Include="Adapter\advancedmediaplayer.h">
+      <Filter>Structure\Adapter</Filter>
+    </ClInclude>
+    <ClInclude Include="Bridge\drawapi.h">
+      <Filter>Structure\Bridge</Filter>
+    </ClInclude>
+    <ClInclude Include="Bridge\shape.h">
+      <Filter>Structure\Bridge</Filter>
+    </ClInclude>
+    <ClInclude Include="Filter\criteria.h">
+      <Filter>Structure\Filter</Filter>
+    </ClInclude>
+    <ClInclude Include="Filter\person.h">
+      <Filter>Structure\Filter</Filter>
+    </ClInclude>
+    <ClInclude Include="Composite\employee.h">
+      <Filter>Structure\Composite</Filter>
+    </ClInclude>
+    <ClInclude Include="Decoraator\shape.h">
+      <Filter>Structure\Decorator</Filter>
+    </ClInclude>
+    <ClInclude Include="Decoraator\shapedecorator.h">
+      <Filter>Structure\Decorator</Filter>
+    </ClInclude>
+    <ClInclude Include="Facade\shape.h">
+      <Filter>Structure\Facade</Filter>
+    </ClInclude>
+    <ClInclude Include="Facade\shapemaker.h">
+      <Filter>Structure\Facade</Filter>
+    </ClInclude>
+    <ClInclude Include="Proxy\image.h">
+      <Filter>Structure\Proxy</Filter>
+    </ClInclude>
+    <ClInclude Include="Chain\logger.h">
+      <Filter>Behavior\Chain</Filter>
+    </ClInclude>
+    <ClInclude Include="Command\order.h">
+      <Filter>Behavior\Command</Filter>
+    </ClInclude>
+    <ClInclude Include="Command\stock.h">
+      <Filter>Behavior\Command</Filter>
+    </ClInclude>
+    <ClInclude Include="Interpreter\expression.h">
+      <Filter>Behavior\Interpreter</Filter>
+    </ClInclude>
+    <ClInclude Include="Iterator\container.h">
+      <Filter>Behavior\Iterator</Filter>
+    </ClInclude>
+    <ClInclude Include="Iterator\iterator.h">
+      <Filter>Behavior\Iterator</Filter>
+    </ClInclude>
+    <ClInclude Include="Mediator\user.h">
+      <Filter>Behavior\Mediator</Filter>
+    </ClInclude>
+    <ClInclude Include="Memento\memento.h">
+      <Filter>Behavior\Memento</Filter>
+    </ClInclude>
+    <ClInclude Include="Memento\originator.h">
+      <Filter>Behavior\Memento</Filter>
+    </ClInclude>
+    <ClInclude Include="Observer\observer.h">
+      <Filter>Behavior\Observer</Filter>
+    </ClInclude>
+    <ClInclude Include="Observer\subject.h">
+      <Filter>Behavior\Observer</Filter>
+    </ClInclude>
+    <ClInclude Include="State\context.h">
+      <Filter>Behavior\State</Filter>
+    </ClInclude>
+    <ClInclude Include="State\tcpstate.h">
+      <Filter>Behavior\State</Filter>
+    </ClInclude>
+    <ClInclude Include="NullObject\customer.h">
+      <Filter>Behavior\NullObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Strategy\strategy.h">
+      <Filter>Behavior\Strategy</Filter>
+    </ClInclude>
+    <ClInclude Include="Template\game.h">
+      <Filter>Behavior\Template</Filter>
+    </ClInclude>
+    <ClInclude Include="Visitor\computer.h">
+      <Filter>Behavior\Visitor</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="sample.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Flyweight\readme.txt">
+      <Filter>Structure\Flyweight</Filter>
+    </Text>
+  </ItemGroup>
+</Project>
