@@ -1,8 +1,8 @@
 # misc
-学习资料杂乱的整理
+学习资料杂乱的整理，详细描述可以参考目录下的`README`文件
 
 
-## 排序算法相关
+## algorithm
 
 - 插入排序 `insertSort`
 
@@ -12,11 +12,43 @@
 
 - 快速排序 `quickSort`
 
-- topK算法（快速选择）`topK,quickSelect`
+- `topK`算法（快速选择）`topK,quickSelect`
 
 - 堆排序 `heapSort`
 
 
-## 人工智能技术浅谈
+## AI
 
 - 简单介绍人工智能相关技术，代码主要参考`pytorch`官方教程
+- 泛概念介绍
+
+## behavior-tree
+
+- 行为树`C#`实现，分离`unity3d`项目的设计
+
+## dl
+- 记录深度学习相关学习内容
+
+## common
+- 一些简单的跨平台函数封装（`datetime、thread`）
+
+## gof-sample
+- 设计模式一些简单例子
+
+## lua
+- `lua`读取`ini`文件封装函数
+
+## mysql
+- 网络收集的一些优化建议
+
+## net-engine
+- 网络实现相关，参考`redis2.8`
+
+## timer
+- 基于时间轮设计的定时器
+
+## py
+- 一些实用脚本整理
+
+## 网络
+- `TCP/IP`学习整理
