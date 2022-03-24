@@ -1,0 +1,10 @@
+# C/C++ build outputs
+build/.vs
+build/CMakeFiles
+build/Debug
+build/x64
+build/*.db
+build/*.txt
+build/*.db
+build/*.opendb
+3rd/rapidjson/*

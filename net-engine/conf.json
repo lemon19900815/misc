@@ -1,0 +1,4 @@
+{
+    "ServerPort": 6666,
+    "MaxEventNum": 10000
+}

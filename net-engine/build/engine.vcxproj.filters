@@ -1,0 +1,104 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="util">
+      <UniqueIdentifier>{9948d53f-27e2-4ab0-9a5a-558607942eb3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="util\net">
+      <UniqueIdentifier>{79af05cf-9a5c-4dfc-8d87-2950d7ba5dee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="util\thread">
+      <UniqueIdentifier>{80a49c08-2ded-4964-962c-e1efddc11813}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="util\log">
+      <UniqueIdentifier>{42563b4c-50a9-4e9a-8baf-836ea82ece98}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="util\ringbuffer">
+      <UniqueIdentifier>{6c3bab45-1caf-447e-899c-fa3978faedd5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="server">
+      <UniqueIdentifier>{54c7ab0b-f63c-44f6-af7e-e57ae441916f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="cmake">
+      <UniqueIdentifier>{ff751aed-bf08-4112-bdeb-70a58750ff58}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\src\gameserver.cc">
+      <Filter>server</Filter>
+    </ClCompile>
+    <ClCompile Include="..\util\log\logger.cc">
+      <Filter>util\log</Filter>
+    </ClCompile>
+    <ClCompile Include="..\util\ringbuffer\ringbuffer.cc">
+      <Filter>util\ringbuffer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\util\net\ae_select.cc">
+      <Filter>util\net</Filter>
+    </ClCompile>
+    <ClCompile Include="..\util\net\netcore.cc">
+      <Filter>util\net</Filter>
+    </ClCompile>
+    <ClCompile Include="..\util\net\networking.cc">
+      <Filter>util\net</Filter>
+    </ClCompile>
+    <ClCompile Include="..\util\net\session.cc">
+      <Filter>util\net</Filter>
+    </ClCompile>
+    <ClCompile Include="..\util\net\ae.cc">
+      <Filter>util\net</Filter>
+    </ClCompile>
+    <ClCompile Include="..\util\net\ae_epoll.cc">
+      <Filter>util\net</Filter>
+    </ClCompile>
+    <ClCompile Include="..\util\net\session_manager.cc">
+      <Filter>util\net</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\src\gameserver.h">
+      <Filter>server</Filter>
+    </ClInclude>
+    <ClInclude Include="..\util\log\logger.h">
+      <Filter>util\log</Filter>
+    </ClInclude>
+    <ClInclude Include="..\util\thread\threadhelper.h">
+      <Filter>util\thread</Filter>
+    </ClInclude>
+    <ClInclude Include="..\util\thread\runable.h">
+      <Filter>util\thread</Filter>
+    </ClInclude>
+    <ClInclude Include="..\util\ringbuffer\ringbuffer.h">
+      <Filter>util\ringbuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\util\net\ae_epoll.h">
+      <Filter>util\net</Filter>
+    </ClInclude>
+    <ClInclude Include="..\util\net\ae_select.h">
+      <Filter>util\net</Filter>
+    </ClInclude>
+    <ClInclude Include="..\util\net\aebase.h">
+      <Filter>util\net</Filter>
+    </ClInclude>
+    <ClInclude Include="..\util\net\netcore.h">
+      <Filter>util\net</Filter>
+    </ClInclude>
+    <ClInclude Include="..\util\net\networking.h">
+      <Filter>util\net</Filter>
+    </ClInclude>
+    <ClInclude Include="..\util\net\session.h">
+      <Filter>util\net</Filter>
+    </ClInclude>
+    <ClInclude Include="..\util\net\ae.h">
+      <Filter>util\net</Filter>
+    </ClInclude>
+    <ClInclude Include="..\util\net\session_manager.h">
+      <Filter>util\net</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\CMakeLists.txt">
+      <Filter>cmake</Filter>
+    </Text>
+  </ItemGroup>
+</Project>
