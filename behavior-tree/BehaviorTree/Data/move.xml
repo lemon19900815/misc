@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<move Info="移动" Type="selector" Id="0" Extra="">
+  <BTN Info="跟随目标" Type="sequence" Id="0" Extra="">
+    <BTN Info="有跟随对象--并且未死亡" Type="condition" Id="-13" Extra="" />
+    <BTN Info="跟随条件" Type="selector" Id="0" Extra="">
+      <BTN Info="跟随对象超出视野范围" Type="condition" Id="-14" Extra="" />
+      <BTN Info="没有靠近跟随目标-以距离0.5f作为指标" Type="condition" Id="-29" Extra="" />
+    </BTN>
+    <BTN Info="跟随目标" Type="action" Id="14" Extra="" />
+  </BTN>
+  <BTN Info="追击目标" Type="sequence" Id="0" Extra="">
+    <BTN Info="有攻击目标，并且攻击目标没有死亡" Type="condition" Id="-15" Extra="" />
+    <BTN Info="自己血量超过百分比--extra 需要填写百分比" Type="condition" Id="-1" Extra="50" />
+    <BTN Info="目标在追击范围内" Type="condition" Id="-21" Extra="" />
+    <BTN Info="目标没有太过靠近自己(主要用于放风筝怪物的相关设定)--以攻击距离的一半作为判断依据" Type="condition" Id="-40" Extra="" />
+    <BTN Info="靠近、追击目标" Type="action" Id="13" Extra="" />
+  </BTN>
+  <BTN Info="移动到指定位置" Type="sequence" Id="0" Extra="">
+    <BTN Info="移动到指定位置条件" Type="selector" Id="0" Extra="">
+      <BTN Info="没有到达目的地附近-以距离0.5f作为指标" Type="condition" Id="-25" Extra="" />
+      <BTN Info="搜索下个副本节点" Type="sequence" Id="0" Extra="">
+        <BTN Info="当前场景中没有敌人" Type="condition" Id="-30" Extra="" />
+        <BTN Info="搜索下个副本节点" Type="action" Id="7" Extra="" />
+      </BTN>
+    </BTN>
+    <BTN Info="移动到目标点(下个副本节点，防守副本位置等)" Type="action" Id="15" Extra="" />
+  </BTN>
+</move>

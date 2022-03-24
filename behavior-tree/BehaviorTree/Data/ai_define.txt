@@ -1,0 +1,5 @@
+ai名	aihandle(id可以不连续)	配置表路径
+攻击ai	1	/Data/attack.xml
+移动ai	2	/Data/move.xml
+搜怪ai	3	/Data/search.xml
+技能ai	4	/Data/skill.xml

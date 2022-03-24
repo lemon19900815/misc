@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search Info="搜索" Type="sequence" Id="0" Extra="">
+  <BTN Info="搜索条件" Type="selector" Id="0" Extra="">
+    <BTN Info="没有目标" Type="condition" Id="-16" Extra="" />
+    <BTN Info="目标锁定是否超时----extraParam-填写时间，秒" Type="condition" Id="-36" Extra="10" />
+  </BTN>
+  <BTN Info="搜索--切换目标" Type="action" Id="12" Extra="" />
+</search>

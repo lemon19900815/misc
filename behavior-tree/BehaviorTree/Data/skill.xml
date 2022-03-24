@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<skill Info="执行攻击" Type="selector" Id="0" Extra="">
+  <BTN Info="技能4判定" Type="sequence" Id="0" Extra="">
+    <BTN Info="是否能够释放技能（由应用层检测冷却cd，状态相关条件）----extraParam-填写技能索引(0、1、2、3)" Type="condition" Id="-44" Extra="3" />
+    <BTN Info="前置技能是否释放----extraParam-填写前置技能索引(0、1、2、3)" Type="condition" Id="-43" Extra="2" />
+    <BTN Info="执行攻击" Type="action" Id="16" Extra="" />
+  </BTN>
+  <BTN Info="技能3判定" Type="sequence" Id="0" Extra="">
+    <BTN Info="是否能够释放技能（由应用层检测冷却cd，状态相关条件）----extraParam-填写技能索引(0、1、2、3)" Type="condition" Id="-44" Extra="2" />
+    <BTN Info="前置技能是否释放----extraParam-填写前置技能索引(0、1、2、3)" Type="condition" Id="-43" Extra="1" />
+    <BTN Info="执行攻击" Type="action" Id="16" Extra="" />
+  </BTN>
+  <BTN Info="技能2判定" Type="sequence" Id="0" Extra="">
+    <BTN Info="是否能够释放技能（由应用层检测冷却cd，状态相关条件）----extraParam-填写技能索引(0、1、2、3)" Type="condition" Id="-44" Extra="1" />
+    <BTN Info="前置技能是否释放----extraParam-填写前置技能索引(0、1、2、3)" Type="condition" Id="-43" Extra="0" />
+    <BTN Info="执行攻击" Type="action" Id="16" Extra="" />
+  </BTN>
+  <BTN Info="技能1判定" Type="sequence" Id="0" Extra="">
+    <BTN Info="是否能够释放技能（由应用层检测冷却cd，状态相关条件）----extraParam-填写技能索引(0、1、2、3)" Type="condition" Id="-44" Extra="0" />
+    <BTN Info="执行攻击" Type="action" Id="16" Extra="" />
+  </BTN>
+</skill>
