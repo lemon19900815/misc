@@ -12,15 +12,13 @@ namespace Singleton
 
 	public:
 		void showMessage() {
-			std::cout << "in gameworld." << std::endl;
+			std::cout << "in game world." << std::endl;
 		}
 
 	protected:
 		GameWorld() {
-
 		}
 		~GameWorld() override {
-
 		}
 	};
 

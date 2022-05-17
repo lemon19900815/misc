@@ -208,6 +208,9 @@
     <ClInclude Include="Visitor\computer.h">
       <Filter>Behavior\Visitor</Filter>
     </ClInclude>
+    <ClInclude Include="Factory\maze.h">
+      <Filter>Creator\Factory</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="sample.cpp" />

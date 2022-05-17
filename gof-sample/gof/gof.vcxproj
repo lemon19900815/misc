@@ -161,6 +161,7 @@
     <ClInclude Include="Facade\shapemaker.h" />
     <ClInclude Include="Factory\abstract_factory.h" />
     <ClInclude Include="Factory\color.h" />
+    <ClInclude Include="Factory\maze.h" />
     <ClInclude Include="Factory\producer_factory.h" />
     <ClInclude Include="Factory\shape.h" />
     <ClInclude Include="Filter\criteria.h" />
