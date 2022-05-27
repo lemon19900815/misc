@@ -124,9 +124,6 @@
     <ClInclude Include="Adapter\mediaplayer.h">
       <Filter>Structure\Adapter</Filter>
     </ClInclude>
-    <ClInclude Include="Adapter\advancedmediaplayer.h">
-      <Filter>Structure\Adapter</Filter>
-    </ClInclude>
     <ClInclude Include="Bridge\drawapi.h">
       <Filter>Structure\Bridge</Filter>
     </ClInclude>
@@ -143,9 +140,6 @@
       <Filter>Structure\Composite</Filter>
     </ClInclude>
     <ClInclude Include="Decoraator\shape.h">
-      <Filter>Structure\Decorator</Filter>
-    </ClInclude>
-    <ClInclude Include="Decoraator\shapedecorator.h">
       <Filter>Structure\Decorator</Filter>
     </ClInclude>
     <ClInclude Include="Facade\shape.h">

@@ -7,7 +7,7 @@
 #include "Bridge/shape.h"
 #include "Filter/criteria.h"
 #include "Composite/employee.h"
-#include "Decoraator/shapedecorator.h"
+#include "Decoraator/shape.h"
 #include "Facade/shapemaker.h"
 #include "Proxy/image.h"
 #include "Chain/logger.h"
@@ -43,7 +43,7 @@ int main(int argc, char** argv)
     Prototype::PrototypePatternDemo::test();
 
     // 适配器模式
-    Adapter::AdapterPatternDemo::test();
+    Adapter::test();
 
     // 桥接模式
     Bridge::BridgePatternDemo::test();
@@ -55,7 +55,7 @@ int main(int argc, char** argv)
     Composite::CompositePatternDemo::test();
 
     // 装饰者模式
-    Decorator::DecoratorPatternDemo::test();
+    Decorator::test();
 
     // 外观模式
     Facade::FacadePatternDemo::test();

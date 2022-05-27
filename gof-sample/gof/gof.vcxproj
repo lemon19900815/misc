@@ -142,7 +142,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Adapter\advancedmediaplayer.h" />
     <ClInclude Include="Adapter\mediaplayer.h" />
     <ClInclude Include="Bridge\drawapi.h" />
     <ClInclude Include="Bridge\shape.h" />
@@ -156,7 +155,6 @@
     <ClInclude Include="Command\stock.h" />
     <ClInclude Include="Composite\employee.h" />
     <ClInclude Include="Decoraator\shape.h" />
-    <ClInclude Include="Decoraator\shapedecorator.h" />
     <ClInclude Include="Facade\shape.h" />
     <ClInclude Include="Facade\shapemaker.h" />
     <ClInclude Include="Factory\abstract_factory.h" />
