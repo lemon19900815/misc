@@ -3,58 +3,47 @@
 
 #include "drawapi.h"
 
-namespace Bridge
-{
-	class Shape
-	{
-	public:
-		Shape(DrawApi* drawApi) {
-			drawApi_ = drawApi;
-		}
+namespace Bridge {
 
-		virtual ~Shape() {
-			Safe_Delete(drawApi_);
-		}
+class Shape {
+public:
+    Shape(DrawApi::Ptr drawApi) {
+        drawApi_ = drawApi;
+    }
 
-		virtual void draw() = 0;
+    virtual ~Shape() { }
+    CLASS_PTR(Shape);
 
-	protected:
-		DrawApi* drawApi_;
-	};
+    virtual void draw() = 0;
 
-	class Circle : public Shape
-	{
-	public:
-		Circle(DrawApi* drawApi)
-			: Shape(drawApi) {
+protected:
+    DrawApi::Ptr drawApi_;
+};
 
-		}
+class Circle : public Shape {
+public:
+    Circle(DrawApi::Ptr drawApi)
+        : Shape(drawApi) {
+    }
 
-		~Circle() override {
+    ~Circle() {
+    }
 
-		}
+    void draw() override {
+        drawApi_->draw("circle");
+    }
+};
 
-		void draw() override {
-			drawApi_->draw("circle");
-		}
-	};
+void test() {
+    std::cout << "\n\nbridge model." << std::endl;
 
-	namespace BridgePatternDemo
-	{
-		void test()
-		{
-			std::cout << "\n\nbridge model." << std::endl;
+    auto shape1 = std::make_shared<Circle>(std::make_shared<RedDraw>());
+    shape1->draw();
 
-			Shape* shape1 = new Circle(new RedDraw());
-			shape1->draw();
+    auto shape2 = std::make_shared<Circle>(std::make_shared<GreenDraw>());
+    shape2->draw();
+}
 
-			Shape* shape2 = new Circle(new GreenDraw());
-			shape2->draw();
-
-			Safe_Delete(shape1);
-			Safe_Delete(shape2);
-		}
-	}
 }
 
 #endif // !__Bridge_Shape_Inc_H__

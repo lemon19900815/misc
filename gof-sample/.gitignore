@@ -1,0 +1,7 @@
+# windows
+.vs
+x64
+Debug
+gof.VC.*
+*.log
+*.out

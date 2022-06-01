@@ -46,7 +46,7 @@ int main(int argc, char** argv)
     Adapter::test();
 
     // 桥接模式
-    Bridge::BridgePatternDemo::test();
+    Bridge::test();
 
     // 过滤器模式
     Filter::CriteriaPatternDemo::test();

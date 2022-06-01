@@ -3,41 +3,30 @@
 
 #include "../stdafx.h"
 
-namespace Bridge
+namespace Bridge {
+class DrawApi
 {
-	class DrawApi
-	{
-	public:
-		virtual ~DrawApi() {
+public:
+	virtual ~DrawApi() { }
+    CLASS_PTR(DrawApi);
 
-		}
+	virtual void draw(const std::string& shape) = 0;
+};
 
-		virtual void draw(const std::string& shape) = 0;
-	};
+class RedDraw : public DrawApi {
+public:
+	void draw(const std::string& shape) override {
+		std::cout << "draw red " << shape << std::endl;
+	}
+};
 
-	class RedDraw : public DrawApi
-	{
-	public:
-		~RedDraw() override {
+class GreenDraw : public DrawApi {
+public:
+	void draw(const std::string& shape) override {
+		std::cout << "draw green " << shape << std::endl;
+	}
+};
 
-		}
-
-		void draw(const std::string& shape) override {
-			std::cout << "draw red " << shape << std::endl;
-		}
-	};
-
-	class GreenDraw : public DrawApi
-	{
-	public:
-		~GreenDraw() override {
-
-		}
-
-		void draw(const std::string& shape) override {
-			std::cout << "draw green " << shape << std::endl;
-		}
-	};
 }
 
 #endif // !__Bridge_Drawapi_Inc_H__
