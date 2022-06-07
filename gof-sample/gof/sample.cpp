@@ -61,7 +61,7 @@ int main(int argc, char** argv)
     Facade::FacadePatternDemo::test();
 
     // 代理模式
-    Proxy::ProxyPatternDemo::test();
+    Proxy::test();
 
     // 任务链模式
     Chain::ChainPatternDemo::test();
