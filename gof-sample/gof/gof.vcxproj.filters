@@ -136,9 +136,6 @@
     <ClInclude Include="Filter\person.h">
       <Filter>Structure\Filter</Filter>
     </ClInclude>
-    <ClInclude Include="Composite\employee.h">
-      <Filter>Structure\Composite</Filter>
-    </ClInclude>
     <ClInclude Include="Decoraator\shape.h">
       <Filter>Structure\Decorator</Filter>
     </ClInclude>
@@ -205,9 +202,15 @@
     <ClInclude Include="Factory\maze.h">
       <Filter>Creator\Factory</Filter>
     </ClInclude>
+    <ClInclude Include="Composite\equipment.h">
+      <Filter>Structure\Composite</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="sample.cpp" />
+    <ClCompile Include="Composite\equipment.cpp">
+      <Filter>Structure\Composite</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Flyweight\readme.txt">

@@ -6,7 +6,7 @@
 #include "Adapter/mediaplayer.h"
 #include "Bridge/shape.h"
 #include "Filter/criteria.h"
-#include "Composite/employee.h"
+#include "Composite/equipment.h"
 #include "Decoraator/shape.h"
 #include "Facade/shapemaker.h"
 #include "Proxy/image.h"
@@ -52,7 +52,7 @@ int main(int argc, char** argv)
     Filter::CriteriaPatternDemo::test();
 
     // 组合模式
-    Composite::CompositePatternDemo::test();
+    Composite::test();
 
     // 装饰者模式
     Decorator::test();
