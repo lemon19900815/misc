@@ -2,69 +2,82 @@
 #define __Facade_ShapeMaker_Inc_H__
 
 #include "../stdafx.h"
-#include "shape.h"
 
-namespace Facade
+namespace Facade {
+
+class Shape {
+public:
+    virtual ~Shape() { }
+    CLASS_PTR(Shape);
+
+    virtual void draw() = 0;
+};
+
+class Circle : public Shape {
+public:
+    ~Circle() { }
+
+    void draw() override {
+        std::cout << "circle draw." << std::endl;
+    }
+};
+
+class Square : public Shape {
+public:
+    ~Square() { }
+    void draw() override {
+        std::cout << "square draw." << std::endl;
+    }
+};
+
+class Rectangle : public Shape
 {
-	class ShapeMaker
-	{
-	public:
-		ShapeMaker() {
-			circle_ = nullptr;
-			square_ = nullptr;
-			rectangle_ = nullptr;
-		}
+public:
+    ~Rectangle() { }
 
-		~ShapeMaker() {
-			Safe_Delete(circle_);
-			Safe_Delete(square_);
-			Safe_Delete(rectangle_);
-		}
+    void draw() override {
+        std::cout << "rectangle draw." << std::endl;
+    }
+};
 
-		void drawCircle() {
-			if (!circle_) {
-				circle_ = new Circle();
-			}
+class ShapeFacade {
+public:
+    ShapeFacade() {
+        circle_ = std::make_shared<Circle>();
+        square_ = std::make_shared<Square>();
+        rectangle_ = std::make_shared<Rectangle>();
+    }
 
-			circle_->draw();
-		}
+    ~ShapeFacade() {
+    }
 
-		void drawSquare() {
-			if (!square_) {
-				square_ = new Square();
-			}
+    void drawCircle() {
+        circle_->draw();
+    }
 
-			square_->draw();
-		}
+    void drawSquare() {
+        square_->draw();
+    }
 
-		void drawRectangle() {
-			if (!rectangle_) {
-				rectangle_ = new Rectangle();
-			}
+    void drawRectangle() {
+        rectangle_->draw();
+    }
 
-			rectangle_->draw();
-		}
+private:
+    std::shared_ptr<Shape> circle_;
+    std::shared_ptr<Shape> square_;
+    std::shared_ptr<Shape> rectangle_;
+};
 
-	private:
-		Shape* circle_;
-		Shape* square_;
-		Shape* rectangle_;
-	};
+void test() {
+	std::cout << "\n\n facade pattern." << std::endl;
 
-	namespace FacadePatternDemo
-	{
-		void test()
-		{
-			std::cout << "\n\n facade pattern." << std::endl;
+	auto sm = std::make_shared<ShapeFacade>();
+	sm->drawCircle();
+	sm->drawSquare();
+	sm->drawRectangle();
+}
 
-			ShapeMaker* sm = new ShapeMaker();
-			sm->drawCircle();
-			sm->drawSquare();
-			sm->drawRectangle();
-
-			Safe_Delete(sm);
-		}
-	}
 }
 
 #endif // !__Facade_ShapeMaker_Inc_H__

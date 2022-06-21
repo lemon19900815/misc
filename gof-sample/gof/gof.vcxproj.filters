@@ -139,9 +139,6 @@
     <ClInclude Include="Decoraator\shape.h">
       <Filter>Structure\Decorator</Filter>
     </ClInclude>
-    <ClInclude Include="Facade\shape.h">
-      <Filter>Structure\Facade</Filter>
-    </ClInclude>
     <ClInclude Include="Facade\shapemaker.h">
       <Filter>Structure\Facade</Filter>
     </ClInclude>

@@ -155,7 +155,6 @@
     <ClInclude Include="Command\stock.h" />
     <ClInclude Include="Composite\equipment.h" />
     <ClInclude Include="Decoraator\shape.h" />
-    <ClInclude Include="Facade\shape.h" />
     <ClInclude Include="Facade\shapemaker.h" />
     <ClInclude Include="Factory\abstract_factory.h" />
     <ClInclude Include="Factory\color.h" />

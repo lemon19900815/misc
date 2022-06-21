@@ -58,7 +58,7 @@ int main(int argc, char** argv)
     Decorator::test();
 
     // 外观模式
-    Facade::FacadePatternDemo::test();
+    Facade::test();
 
     // 代理模式
     Proxy::test();
