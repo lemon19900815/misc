@@ -64,7 +64,7 @@ int main(int argc, char** argv)
     Proxy::test();
 
     // 任务链模式
-    Chain::ChainPatternDemo::test();
+    Chain::test();
 
     // 命令模式
     Command::CommandPatternDemo::test();

@@ -3,117 +3,96 @@
 
 #include "../stdafx.h"
 
-namespace Chain
-{
-	constexpr int INFO  = 1;
-	constexpr int DEBUG = 2;
-	constexpr int ERROR = 3;
+namespace Chain {
 
-	class AbstractLogger
-	{
-	public:
-		virtual ~AbstractLogger() {
+constexpr int INFO  = 1;
+constexpr int DEBUG = 2;
+constexpr int ERROR = 3;
 
-		}
+class AbstractLogger {
+public:
+    virtual ~AbstractLogger() { }
+    CLASS_PTR(AbstractLogger);
 
-		void setNextLogger(AbstractLogger* nextLogger) {
-			nextLogger_ = nextLogger;
-		}
+    void setNextLogger(AbstractLogger::Ptr nextLogger) {
+        next_logger_ = nextLogger;
+    }
 
-		void logMessage(int level, std::string message) {
-			if (level_ <= level) {
-				write(message);
-			}
+    void logMessage(int level, std::string message) {
+        if (level_ <= level) {
+            write(message);
+        }
 
-			if (nextLogger_) {
-				nextLogger_->logMessage(level, message);
-			}
-		}
+        if (next_logger_) {
+            next_logger_->logMessage(level, message);
+        }
+    }
 
-	private:
-		virtual void write(std::string& message) = 0;
+private:
+    virtual void write(std::string& message) = 0;
 
-	protected:
-		int				level_;
-		AbstractLogger* nextLogger_;
-	};
+protected:
+    int32_t level_;
+    AbstractLogger::Ptr next_logger_ = nullptr;
+};
 
-	class ConsoleLogger : public AbstractLogger
-	{
-	public:
-		ConsoleLogger() {
-			level_ = INFO;
-			nextLogger_ = nullptr;
-		}
+class ConsoleLogger : public AbstractLogger {
+public:
+    ConsoleLogger() {
+        level_ = INFO;
+    }
 
-		~ConsoleLogger() override {
+    ~ConsoleLogger() { }
 
-		}
+private:
+    void write(std::string& message) {
+        std::cout << "INFO: " << message << std::endl;
+    }
+};
 
-	private:
-		void write(std::string& message) {
-			std::cout << "INFO: " << message << std::endl;
-		}
-	};
+class DebugLogger : public AbstractLogger {
+public:
+    DebugLogger() {
+        level_ = DEBUG;
+    }
 
-	class DebugLogger : public AbstractLogger
-	{
-	public:
-		DebugLogger() {
-			level_ = DEBUG;
-			nextLogger_ = nullptr;
-		}
+    ~DebugLogger() { }
 
-		~DebugLogger() override {
+private:
+    void write(std::string& message) {
+        std::cout << "DEBUG: " << message << std::endl;
+    }
+};
 
-		}
+class ErrorLogger : public AbstractLogger {
+public:
+    ErrorLogger() {
+        level_ = ERROR;
+    }
 
-	private:
-		void write(std::string& message) {
-			std::cout << "DEBUG: " << message << std::endl;
-		}
-	};
+    ~ErrorLogger() { }
 
-	class ErrorLogger : public AbstractLogger
-	{
-	public:
-		ErrorLogger() {
-			level_ = ERROR;
-			nextLogger_ = nullptr;
-		}
+private:
+    void write(std::string& message) {
+        std::cout << "ERROR: " << message << std::endl;
+    }
+};
 
-		~ErrorLogger() override {
+void test() {
+    std::cout << "\n\n chain of responsibility pattern." << std::endl;
 
-		}
+    auto infoLogger = std::make_shared<ConsoleLogger>();
+    auto debugLogger = std::make_shared<DebugLogger>();
+    auto errorLogger = std::make_shared<ErrorLogger>();
 
-	private:
-		void write(std::string& message) {
-			std::cout << "ERROR: " << message << std::endl;
-		}
-	};
+    errorLogger->setNextLogger(debugLogger);
+    debugLogger->setNextLogger(infoLogger);
 
-	namespace ChainPatternDemo
-	{
-		void test()
-		{
-			std::cout << "\n\n chain of responsibility pattern." << std::endl;
+    errorLogger->logMessage(ERROR, "failed to find a");
+    errorLogger->logMessage(DEBUG, "failed to find b");
+    errorLogger->logMessage(INFO,  "failed to find c");
+}
 
-			AbstractLogger* infoLogger = new ConsoleLogger();
-			AbstractLogger* debugLogger = new DebugLogger();
-			AbstractLogger* errorLogger = new ErrorLogger();
-
-			errorLogger->setNextLogger(debugLogger);
-			debugLogger->setNextLogger(infoLogger);
-
-			errorLogger->logMessage(ERROR, "failed to find Mr.Cai");
-			errorLogger->logMessage(DEBUG, "failed to find Mr.Xie");
-			errorLogger->logMessage(INFO,  "failed to find Mr.Wang");
-
-			Safe_Delete(infoLogger);
-			Safe_Delete(debugLogger);
-			Safe_Delete(errorLogger);
-		}
-	}
 }
 
 #endif //  __Chain_Logger_Inc_H__

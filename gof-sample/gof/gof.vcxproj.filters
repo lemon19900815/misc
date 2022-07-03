@@ -202,6 +202,9 @@
     <ClInclude Include="Composite\equipment.h">
       <Filter>Structure\Composite</Filter>
     </ClInclude>
+    <ClInclude Include="Flyweight\glyph.h">
+      <Filter>Structure\Flyweight</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="sample.cpp" />

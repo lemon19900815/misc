@@ -163,6 +163,7 @@
     <ClInclude Include="Factory\shape.h" />
     <ClInclude Include="Filter\criteria.h" />
     <ClInclude Include="Filter\person.h" />
+    <ClInclude Include="Flyweight\glyph.h" />
     <ClInclude Include="Interpreter\expression.h" />
     <ClInclude Include="Iterator\container.h" />
     <ClInclude Include="Iterator\iterator.h" />
