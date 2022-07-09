@@ -53,3 +53,15 @@
 
 ## 网络
 - `TCP/IP`学习整理
+
+## 辅助类helper（c++）
+- glog日志辅助类
+- dump宕机检测辅助类
+
+## base基础知识搜集
+
+- docker基础
+- pip指定豆瓣源
+- 在centos7.9上安装opencv3.14.6
+- 更多...
+
