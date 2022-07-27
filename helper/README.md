@@ -43,4 +43,31 @@
   }
   ```
 
+## console_bar.h
+
+- 通常程序在加载大量数据或者做大量计算时，控制台会陷入到假死的状态，不能观察程序的执行情况
+- console bar通过打印任务进度来缓解这种情况
+- 运行效果：test\[================================================] 100%...
+- 使用示例
+
+```c++
+#include <thread>
+#include <chrono>
+
+#include "console_bar.h"
+
+// c++11 chrono
+static void SleepMs(int64_t ms) {
+	std::this_thread::sleep_for(std::chrono::milliseconds(ms));
+}
+
+int main() {
+    ConsoleBar bar("test", 100);
+    for (int32_t i = 0; i < 100; ++i) {
+      bar.Process(i+1);
+      SleepMs(100);
+    }
+    return 0;
+}
+```
   
