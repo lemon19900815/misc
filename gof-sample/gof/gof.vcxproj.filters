@@ -151,9 +151,6 @@
     <ClInclude Include="Command\order.h">
       <Filter>Behavior\Command</Filter>
     </ClInclude>
-    <ClInclude Include="Command\stock.h">
-      <Filter>Behavior\Command</Filter>
-    </ClInclude>
     <ClInclude Include="Interpreter\expression.h">
       <Filter>Behavior\Interpreter</Filter>
     </ClInclude>

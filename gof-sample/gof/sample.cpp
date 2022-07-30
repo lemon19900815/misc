@@ -67,7 +67,7 @@ int main(int argc, char** argv)
     Chain::test();
 
     // 命令模式
-    Command::CommandPatternDemo::test();
+    Command::test();
 
     // 解释器模式
     Interpreter::InterpreterPatternDemo::test();
@@ -108,4 +108,3 @@ int main(int argc, char** argv)
 
     return 0;
 }
-

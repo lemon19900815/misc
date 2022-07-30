@@ -2,102 +2,108 @@
 #define __Command_Order_Inc_H__
 
 #include "../stdafx.h"
-#include "stock.h"
 #include <list>
 
-namespace Command
-{
-	class Order
-	{
-	public:
-		virtual ~Order() {
+namespace Command {
 
-		}
+class Stock {
+  public:
+  Stock(std::string name, int amount) {
+    name_ = name;
+    amount_ = amount;
+  }
+  ~Stock() { }
+  CLASS_PTR(Stock);
 
-		virtual void execute() = 0;
-	};
+  void buy() {
+    std::cout << "buy stock[name: " << name_
+      << ", amount: " << amount_ << "]" << std::endl;
+  }
 
-	class BuyStock : public Order
-	{
-	public:
-		BuyStock(Stock* stock) {
-			stock_ = stock;
-		}
+  void sell() {
+    std::cout << "sell stock[name: " << name_
+      << ", amount: " << amount_ << "]" << std::endl;
+  }
 
-		void execute() {
-			stock_->buy();
-		}
+private:
+  std::string name_;
+  int32_t amount_;
+};
 
-	private:
-		Stock* stock_;
-	};
+// command½Ó¿Ú
+class Order {
+public:
+  virtual ~Order() { }
+  CLASS_PTR(Order);
+  virtual void execute() = 0;
+  };
 
-	class SellStock : public Order
-	{
-	public:
-		SellStock(Stock* stock) {
-			stock_ = stock;
-		}
+class BuyStock : public Order {
+public:
+  BuyStock(Stock::Ptr stock) {
+    stock_ = stock;
+  }
 
-		void execute() {
-			stock_->sell();
-		}
+  void execute() {
+    stock_->buy();
+  }
 
-	private:
-		Stock* stock_;
-	};
+private:
+    Stock::Ptr stock_;
+};
 
-	class Broker
-	{
-	public:
-		Broker() {
+class SellStock : public Order {
+public:
+  SellStock(Stock::Ptr stock) {
+    stock_ = stock;
+  }
 
-		}
+  void execute() {
+    stock_->sell();
+  }
 
-		~Broker() {
-			for (auto& it : orderList_) {
-				Safe_Delete(it);
-			}
-			orderList_.clear();
-		}
+private:
+  Stock::Ptr stock_;
+};
 
-		void takeOrder(Order* order) {
-			orderList_.push_back(order);
-		}
+class Broker {
+public:
+  Broker() { }
 
-		void placeOrders() {
-			for (auto& it : orderList_) {
-				it->execute();
-			}
-		}
+  ~Broker() {
+    orderList_.clear();
+  }
 
-	private:
-		std::list<Order*> orderList_;
-	};
+  void takeOrder(Order::Ptr order) {
+    orderList_.emplace_back(order);
+  }
 
-	namespace CommandPatternDemo
-	{
-		void test()
-		{
-			std::cout << "\n\n command pattern." << std::endl;
+  void placeOrders() {
+    for (auto& it : orderList_) {
+      it->execute();
+    }
+  }
 
-			Stock* qq = new Stock("qq", 100);
-			Stock* alibaba = new Stock("alibaba", 400);
+private:
+  std::list<Order::Ptr> orderList_;
+};
 
-			Broker* broker = new Broker();
-			broker->takeOrder(new BuyStock(qq));
-			broker->takeOrder(new SellStock(qq));
+void test() {
+  std::cout << "\n\n command pattern." << std::endl;
 
-			broker->takeOrder(new BuyStock(alibaba));
-			broker->takeOrder(new SellStock(alibaba));
+  Stock::Ptr qq = std::make_shared<Stock>("qq", 100);
+  Stock::Ptr alibaba = std::make_shared<Stock>("alibaba", 400);
 
-			broker->placeOrders();
+  auto broker = std::make_shared<Broker>();
+  broker->takeOrder(std::make_shared<BuyStock>(qq));
+  broker->takeOrder(std::make_shared<SellStock>(qq));
 
-			Safe_Delete(qq);
-			Safe_Delete(alibaba);
-			Safe_Delete(broker);
-		}
-	}
+  broker->takeOrder(std::make_shared<BuyStock>(alibaba));
+  broker->takeOrder(std::make_shared<SellStock>(alibaba));
+
+  broker->placeOrders();
+}
+
 }
 
 #endif //  __Command_Order_Inc_H__

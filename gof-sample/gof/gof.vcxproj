@@ -152,7 +152,6 @@
     <ClInclude Include="Builder\packing.h" />
     <ClInclude Include="Chain\logger.h" />
     <ClInclude Include="Command\order.h" />
-    <ClInclude Include="Command\stock.h" />
     <ClInclude Include="Composite\equipment.h" />
     <ClInclude Include="Decoraator\shape.h" />
     <ClInclude Include="Facade\shapemaker.h" />
