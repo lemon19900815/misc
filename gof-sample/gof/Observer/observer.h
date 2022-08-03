@@ -3,67 +3,39 @@
 
 #include "../stdafx.h"
 
-namespace Observer
-{
-	class Subject;
+namespace Observer {
 
-	class Observer
-	{
-	public:
-		virtual ~Observer() {
+class Subject;
 
-		}
+class Observer {
+public:
+  virtual ~Observer() { }
+  CLASS_PTR(Observer);
 
-		virtual void update() = 0;
+  virtual void Update(std::shared_ptr<Subject> subject) = 0;
+};
 
-	protected:
-		Subject* subject_;
-	};
+class BinaryObserver : public Observer {
+public:
+  void Update(std::shared_ptr<Subject> subject) override {
+    std::cout << "BinaryObserver update." << std::endl;
+  }
+};
 
-	class BinaryObserver : public Observer
-	{
-	public:
-		BinaryObserver(Subject* subject) {
-			subject_ = subject;
-		}
+class OctalObserver : public Observer {
+public:
+  void Update(std::shared_ptr<Subject> subject) override {
+    std::cout << "OctalObserver update." << std::endl;
+  }
+};
 
-		~BinaryObserver() override {
-		}
+class HexaObserver : public Observer {
+public:
+  void Update(std::shared_ptr<Subject> subject) override {
+    std::cout << "HexaObserver update." << std::endl;
+  }
+};
 
-		void update() override {
-			std::cout << "BinaryObserver update." << std::endl;
-		}
-	};
-
-	class OctalObserver : public Observer
-	{
-	public:
-		OctalObserver(Subject* subject) {
-			subject_ = subject;
-		}
-
-		~OctalObserver() override {
-		}
-
-		void update() override {
-			std::cout << "OctalObserver update." << std::endl;
-		}
-	};
-
-	class HexaObserver : public Observer
-	{
-	public:
-		HexaObserver(Subject* subject) {
-			subject_ = subject;
-		}
-
-		~HexaObserver() override {
-		}
-
-		void update() override {
-			std::cout << "HexaObserver update." << std::endl;
-		}
-	};
 }
 
 #endif //  __Observer_Observer_Inc_H__

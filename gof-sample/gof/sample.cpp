@@ -82,7 +82,7 @@ int main(int argc, char** argv)
     Memento::MementoPatternDemo::test();
 
     // 观察者模式
-    Observer::ObserverPatternDemo::test();
+    Observer::test();
 
     // 状态模式
     State::StatePatternDemo::test();

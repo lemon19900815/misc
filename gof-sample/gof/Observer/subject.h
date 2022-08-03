@@ -5,57 +5,55 @@
 #include "observer.h"
 #include <list>
 
-namespace Observer
-{
-	class Subject
-	{
-	public:
-		Subject() {
-			state_ = 0;
-		}
+namespace Observer {
 
-		int state() {
-			return state_;
-		}
+class Subject : std::enable_shared_from_this<Subject> {
+public:
+  Subject() {
+    state_ = 0;
+  }
+  CLASS_PTR(Subject);
 
-		void set_state(int state) {
-			state_ = state;
-		}
+  int GetState() {
+    return state_;
+  }
 
-		void attach(Observer* observer) {
-			observers_.push_back(observer);
-		}
+  void SetState(int state) {
+    state_ = state;
+    NotifyAll();
+  }
 
-		void notifyAll() {
-			for (auto& it : observers_) {
-				it->update();
-			}
-		}
+  void Attach(Observer::Ptr observer) {
+    observers_.push_back(observer);
+  }
 
-	private:
-		int state_;
-		std::list<Observer*> observers_;
-	};
+  void NotifyAll() {
+    auto this_sub = shared_from_this();
+    for (auto& it : observers_) {
+      it->Update(this_sub);
+    }
+  }
 
-	namespace ObserverPatternDemo
-	{
-		void test()
-		{
-			std::cout << "\n\n observer pattern." << std::endl;
+private:
+  int32_t state_;
+  std::list<Observer::Ptr> observers_;
+};
 
-			Subject* subject = new Subject();
-			auto observer1 = new BinaryObserver(subject);
-			auto observer2 = new OctalObserver(subject);
-			auto observer3 = new HexaObserver(subject);
+void test() {
+  std::cout << "\n\n observer pattern." << std::endl;
 
-			subject->attach(observer1);
-			subject->attach(observer2);
-			subject->attach(observer3);
+  auto subject = std::make_shared<Subject>();
+  auto observer1 = std::make_shared<BinaryObserver>();
+  auto observer2 = std::make_shared<OctalObserver>();
+  auto observer3 = std::make_shared<HexaObserver>();
 
-			subject->set_state(1);
-			subject->notifyAll();
-		}
-	}
+  subject->Attach(observer1);
+  subject->Attach(observer2);
+  subject->Attach(observer3);
+
+  subject->SetState(1);
+}
+
 }
 
 #endif // !__Observer_Subject_Inc_H__
