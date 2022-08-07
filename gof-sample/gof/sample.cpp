@@ -92,7 +92,7 @@ int main(int argc, char** argv)
     NullObject::NullObjectPatternDemo::test();
 
     // 策略模式
-    Strategy::StragegyPatternDemo::test();
+    Strategy::test();
 
     // 模板模式
     Template::TemplatePatternDemo::test();

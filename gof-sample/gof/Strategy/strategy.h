@@ -3,107 +3,80 @@
 
 #include "../stdafx.h"
 
-namespace Strategy
-{
-	class AbstractStategy
-	{
-	public:
-		virtual ~AbstractStategy() {
+namespace Strategy {
 
-		}
+class AbstractStategy {
+public:
+  virtual ~AbstractStategy() { }
+  CLASS_PTR(AbstractStategy);
 
-		virtual int operate(int num1, int num2) = 0;
-	};
+  virtual int32_t Operate(int32_t num1, int32_t num2) = 0;
+};
 
-	class OperationAdd : public AbstractStategy
-	{
-	public:
-		~OperationAdd() override {
+class OperationAdd : public AbstractStategy {
+public:
+  int32_t Operate(int32_t num1, int32_t num2) override {
+    return num1 + num2;
+  }
+};
 
-		}
+class OperationSub : public AbstractStategy {
+public:
+  int32_t Operate(int32_t num1, int32_t num2) override {
+    return num1 - num2;
+  }
+};
 
-		int operate(int num1, int num2) override {
-			return num1 + num2;
-		}
-	};
+class OperationMultiply : public AbstractStategy {
+public:
+  int32_t Operate(int32_t num1, int32_t num2) override {
+    return num1 * num2;
+  }
+};
 
-	class OperationSub : public AbstractStategy
-	{
-	public:
-		~OperationSub() override {
+class OperationDivide : public AbstractStategy {
+public:
+  int32_t Operate(int32_t num1, int32_t num2) override {
+    if (num2 == 0) {
+      std::cerr << "num2 is zero." << std::endl;
+      assert(false);
+      return -1;
+    }
+    return num1 / num2;
+  }
+};
 
-		}
+class Context {
+public:
+  Context(AbstractStategy::Ptr strategy) {
+    strategy_ = strategy;
+  }
 
-		int operate(int num1, int num2) override {
-			return num1 - num2;
-		}
-	};
+  virtual ~Context() {
+  }
 
-	class OperationMultiply : public AbstractStategy
-	{
-	public:
-		~OperationMultiply() override {
+  int32_t Calculate(int32_t num1, int32_t num2) {
+    return strategy_->Operate(num1, num2);
+  }
 
-		}
+private:
+  AbstractStategy::Ptr strategy_;
+};
 
-		int operate(int num1, int num2) override {
-			return num1 * num2;
-		}
-	};
+void test() {
+  std::cout << "\n\n strategy pattern." << std::endl;
 
-	class OperationDivide : public AbstractStategy
-	{
-	public:
-		~OperationDivide() override {
+  Context add(std::make_shared<OperationAdd>());
+  Context sub(std::make_shared<OperationSub>());
+  Context multiply(std::make_shared<OperationMultiply>());
+  Context divide(std::make_shared<OperationDivide>());
 
-		}
+  std::cout << "3 + 5 = " << add.Calculate(3, 5) << std::endl;
+  std::cout << "1 - 7 = " << sub.Calculate(1, 7) << std::endl;
+  std::cout << "3 * 5 = " << multiply.Calculate(3, 5) << std::endl;
+  std::cout << "8 / 2 = " << divide.Calculate(8, 2) << std::endl;
+}
 
-		int operate(int num1, int num2) override {
-			if (num2 == 0) {
-				std::cerr << "num2 is zero." << std::endl;
-				assert(false);
-				return -1;
-			}
-			return num1 / num2;
-		}
-	};
-
-	class Context
-	{
-	public:
-		Context(AbstractStategy* strategy) {
-			strategy_ = strategy;
-		}
-
-		~Context() {
-			Safe_Delete(strategy_);
-		}
-
-		int calculate(int num1, int num2) {
-			return strategy_->operate(num1, num2);
-		}
-
-	private:
-		AbstractStategy* strategy_;
-	};
-
-	namespace StragegyPatternDemo
-	{
-		void test()
-		{
-			std::cout << "\n\n strategy pattern." << std::endl;
-
-			Context add(new OperationAdd());
-			Context sub(new OperationSub());
-			Context multiply(new OperationMultiply());
-			Context divide(new OperationDivide());
-
-			std::cout << "3 + 5 = " << add.calculate(3, 5) << std::endl;
-			std::cout << "1 - 7 = " << sub.calculate(1, 7) << std::endl;
-			std::cout << "3 * 5 = " << multiply.calculate(3, 5) << std::endl;
-			std::cout << "8 / 2 = " << divide.calculate(8, 2) << std::endl;
-		}
-	}
 }
 
 #endif // __Strategy_Stategy_Inc_H__
