@@ -275,7 +275,7 @@ int topK(int a[], int len, int k)
 {
 	assert(k > 0 && k <= len);
 	quickSelect(a, len, k);
-	return a[k-1];
+	return a[len - k];
 }
 
 inline int getMax(int a, int b)
