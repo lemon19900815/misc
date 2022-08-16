@@ -274,7 +274,7 @@ void quickSelect(int a[], int len, int k)
 int topK(int a[], int len, int k)
 {
 	assert(k > 0 && k <= len);
-	quickSelect(a, len, k);
+	quickSelect(a, len, len - k);
 	return a[len - k];
 }
 
