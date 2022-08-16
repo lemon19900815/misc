@@ -78,10 +78,10 @@ int median3(int a[], int left, int right)
 	int center = (left+right)/2;
 	if(a[center] < a[left])
 		swap(a[center], a[left]);
-	if(a[right] < a[center])
-		swap(a[right], a[center]);
 	if(a[right] < a[left])
 		swap(a[right], a[left]);
+	if(a[right] < a[center])
+		swap(a[right], a[center]);
 	// hide pivot.
 	swap(a[center], a[right-1]);
 	return a[right-1];
