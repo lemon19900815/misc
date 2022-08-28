@@ -98,7 +98,7 @@ int main(int argc, char** argv)
     Template::TemplatePatternDemo::test();
 
     // 访问者模式
-    Visitor::VisitorPatternDemo::test();
+    Visitor::test();
 
     maze::test();
 

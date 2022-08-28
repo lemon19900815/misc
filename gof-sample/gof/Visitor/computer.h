@@ -3,117 +3,94 @@
 
 #include "../stdafx.h"
 
-namespace Visitor
+namespace Visitor {
+
+class Keyboard;
+class Mouse;
+class Monitor;
+class Computer;
+
+class ComputerPartVisiter {
+public:
+  void Visit(Keyboard* keyboard) {
+    std::cout << "keyboard display." << std::endl;
+  }
+
+  void Visit(Mouse* mouse) {
+    std::cout << "mouse display." << std::endl;
+  }
+
+  void Visit(Monitor* monitor) {
+    std::cout << "monitor display." << std::endl;
+  }
+
+  void Visit(Computer* computer) {
+    std::cout << "computer display." << std::endl;
+  }
+};
+
+class ComputerPart {
+public:
+  virtual ~ComputerPart() { }
+  CLASS_PTR(ComputerPart);
+
+  virtual void Accept(ComputerPartVisiter& visitor) = 0;
+};
+
+class Keyboard : public ComputerPart {
+public:
+  void Accept(ComputerPartVisiter& visitor) override {
+    visitor.Visit(this);
+  }
+};
+
+class Mouse : public ComputerPart
 {
-	class Keyboard;
-	class Mouse;
-	class Monitor;
-	class Computer;
+public:
+  void Accept(ComputerPartVisiter& visitor) override {
+    visitor.Visit(this);
+  }
+};
 
-	class ComputerPartVisiter
-	{
-	public:
-		void visit(Keyboard* keyboard) {
-			std::cout << "keyboard display." << std::endl;
-		}
+class Monitor : public ComputerPart
+{
+public:
+  void Accept(ComputerPartVisiter& visitor) override {
+    visitor.Visit(this);
+  }
+};
 
-		void visit(Mouse* mouse) {
-			std::cout << "mouse display." << std::endl;
-		}
+class Computer : public ComputerPart {
+public:
+  Computer() {
+    parts_.push_back(std::make_shared<Keyboard>());
+    parts_.push_back(std::make_shared<Monitor>());
+    parts_.push_back(std::make_shared<Mouse>());
+  }
 
-		void visit(Monitor* monitor) {
-			std::cout << "monitor display." << std::endl;
-		}
+  ~Computer() {
+  }
 
-		void visit(Computer* computer) {
-			std::cout << "computer display." << std::endl;
-		}
-	};
+  void Accept(ComputerPartVisiter& visitor) override {
+    for (auto& ele : parts_) {
+      ele->Accept(visitor);
+    }
+    visitor.Visit(this);
+  }
 
-	class ComputerPart
-	{
-	public:
-		virtual ~ComputerPart() {
+private:
+  std::list<ComputerPart::Ptr> parts_;
+};
 
-		}
+void test() {
+  std::cout << "\n\n visitor pattern." << std::endl;
 
-		virtual void accept(ComputerPartVisiter& visitor) = 0;
-	};
+  ComputerPartVisiter visitor;
+  Computer computer;
 
-	class Keyboard : public ComputerPart
-	{
-	public:
-		~Keyboard() override {
+  computer.Accept(visitor);
+}
 
-		}
-
-		void accept(ComputerPartVisiter& visitor) override {
-			visitor.visit(this);
-		}
-	};
-
-	class Mouse : public ComputerPart
-	{
-	public:
-		~Mouse() override {
-
-		}
-
-		void accept(ComputerPartVisiter& visitor) override {
-			visitor.visit(this);
-		}
-	};
-
-	class Monitor : public ComputerPart
-	{
-	public:
-		~Monitor() override {
-
-		}
-
-		void accept(ComputerPartVisiter& visitor) override {
-			visitor.visit(this);
-		}
-	};
-
-	class Computer : public ComputerPart
-	{
-	public:
-		Computer() {
-			parts_[0] = new Keyboard();
-			parts_[1] = new Monitor();
-			parts_[2] = new Mouse();
-		}
-
-		~Computer() override {
-			for (int i = 0; i < 3; ++i) {
-				Safe_Delete(parts_[i]);
-			}
-		}
-
-		void accept(ComputerPartVisiter& visitor) override {
-			for (int i = 0; i < 3; ++i) {
-				parts_[i]->accept(visitor);
-			}
-			visitor.visit(this);
-		}
-
-	private:
-		ComputerPart* parts_[3];
-	};
-
-	namespace VisitorPatternDemo
-	{
-		void test()
-		{
-			std::cout << "\n\n visitor pattern." << std::endl;
-
-			ComputerPartVisiter visitor;
-			Computer computer;
-
-			computer.accept(visitor);
-		}
-	}
 }
 
 #endif // __Visitor_Computer_Inc_H__

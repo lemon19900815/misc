@@ -7,7 +7,7 @@
 
 namespace Observer {
 
-class Subject : std::enable_shared_from_this<Subject> {
+class Subject : public std::enable_shared_from_this<Subject> {
 public:
   Subject() {
     state_ = 0;
