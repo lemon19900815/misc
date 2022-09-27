@@ -175,9 +175,6 @@
     <ClInclude Include="Observer\subject.h">
       <Filter>Behavior\Observer</Filter>
     </ClInclude>
-    <ClInclude Include="State\context.h">
-      <Filter>Behavior\State</Filter>
-    </ClInclude>
     <ClInclude Include="State\tcpstate.h">
       <Filter>Behavior\State</Filter>
     </ClInclude>

@@ -176,7 +176,6 @@
     <ClInclude Include="Proxy\image.h" />
     <ClInclude Include="Singleton\gameworld.h" />
     <ClInclude Include="Singleton\singleton.h" />
-    <ClInclude Include="State\context.h" />
     <ClInclude Include="State\tcpstate.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Strategy\strategy.h" />

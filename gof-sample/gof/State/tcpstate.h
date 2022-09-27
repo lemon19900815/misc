@@ -1,191 +1,152 @@
-#ifndef __State_TcpState_Inc_H__
-#define __State_TcpState_Inc_H__
+#pragma once
 
 #include "../stdafx.h"
 
-#include <chrono>
-#include <thread>
+namespace state {
 
-namespace TcpState
-{
-    class TcpState;
+class TcpContext;
+class TcpState {
+public:
+  virtual ~TcpState() { }
+  CLASS_PTR(TcpState);
 
-    class TcpContext
-    {
-    public:
-        TcpContext() {
-            frame_ = 0;
-            tcpstate_ = nullptr;
-        }
+  virtual void Enter(TcpContext& ctx) = 0;
+  virtual void Update(TcpContext& ctx) = 0;
+  virtual void Exit(TcpContext& ctx) = 0;
+};
 
-        TcpState* tcpstate() {
-            return tcpstate_;
-        }
+class TcpContext {
+public:
+  TcpContext() {
+    frame_ = 0;
+    tcp_state_ = nullptr;
+  }
 
-        void set_tcpstate(TcpState* tcpstate) {
-            tcpstate_ = tcpstate;
-        }
+  TcpState::Ptr GetState() {
+    return tcp_state_;
+  }
 
-        int frame() {
-            return frame_;
-        }
+  void SetState(TcpState::Ptr tcp_state) {
+    tcp_state_ = tcp_state;
+  }
 
-        void update();
+  // 实现在tcp状态定义之后
+  void Update();
 
-    private:
-        int			frame_;
-        TcpState*	tcpstate_;
-    };
+private:
+  int32_t frame_;
+  TcpState::Ptr tcp_state_;
+};
 
-    class TcpState
-    {
-    public:
-        virtual ~TcpState() {
+class TcpEstablished
+  : public TcpState,
+    public std::enable_shared_from_this<TcpEstablished> {
+public:
+  void Enter(TcpContext& ctx) override {
+    LOG(__FUNCTION__);
+    ctx.SetState(shared_from_this());
+  }
 
-        }
+  void Update(TcpContext& ctx) override {
+  }
 
-        virtual void enter(TcpContext& ctx) = 0;
-        virtual void update(TcpContext& ctx) = 0;
-        virtual void exit(TcpContext& ctx) = 0;
-    };
+  void Exit(TcpContext& ctx) override {
+    ctx.SetState(nullptr);
+  }
+};
 
-    class ConnectState : public TcpState
-    {
-    public:
-        ~ConnectState() override {
+class TcpRun
+  : public TcpState,
+    public std::enable_shared_from_this<TcpRun> {
+public:
+  void Enter(TcpContext& ctx) override {
+    LOG(__FUNCTION__);
+    ctx.SetState(shared_from_this());
+  }
 
-        }
+  void Update(TcpContext& ctx) override {
+  }
 
-        void enter(TcpContext& ctx) override {
-            std::cout << "connect." << std::endl;
-            ctx.set_tcpstate(this);
-        }
+  void Exit(TcpContext& ctx) override {
+    ctx.SetState(nullptr);
+  }
+};
 
-        void update(TcpContext& ctx) override {
+class TcpReconnect
+  : public TcpState,
+    public std::enable_shared_from_this<TcpReconnect> {
+public:
+  void Enter(TcpContext& ctx) override {
+    LOG(__FUNCTION__);
+    ctx.SetState(shared_from_this());
+  }
 
-        }
+  void Update(TcpContext& ctx) override {
+  }
 
-        void exit(TcpContext& ctx) override {
-            ctx.set_tcpstate(nullptr);
-        }
-    };
+  void Exit(TcpContext& ctx) override {
+    ctx.SetState(nullptr);
+  }
+};
 
-    class RunState : public TcpState
-    {
-    public:
-        ~RunState() override {
+class TcpClose
+  : public TcpState,
+    public std::enable_shared_from_this<TcpClose> {
+public:
+  void Enter(TcpContext& ctx) override {
+    LOG(__FUNCTION__);
+    ctx.SetState(shared_from_this());
+  }
 
-        }
+  void Update(TcpContext& ctx) override {
+  }
 
-        void enter(TcpContext& ctx) override {
-            std::cout << "running." << std::endl;
-            ctx.set_tcpstate(this);
-        }
+  void Exit(TcpContext& ctx) override {
+    ctx.SetState(nullptr);
+  }
+};
 
-        void update(TcpContext& ctx) override {
+void TcpContext::Update() {
+  int loop = 0;
 
-        }
+  while (loop++ < 100) {
+    ++frame_;
 
-        void exit(TcpContext& ctx) override {
-            ctx.set_tcpstate(nullptr);
-        }
-    };
-
-    class ReconnectState : public TcpState
-    {
-    public:
-        ~ReconnectState() override {
-
-        }
-
-        void enter(TcpContext& ctx) override {
-            std::cout << "reconnect." << std::endl;
-            ctx.set_tcpstate(this);
-        }
-
-        void update(TcpContext& ctx) override {
-
-        }
-
-        void exit(TcpContext& ctx) override {
-            ctx.set_tcpstate(nullptr);
-        }
-    };
-
-    class CloseState : public TcpState
-    {
-    public:
-        ~CloseState() override {
-
-        }
-
-        void enter(TcpContext& ctx) override {
-            std::cout << "close." << std::endl;
-            ctx.set_tcpstate(this);
-        }
-
-        void update(TcpContext& ctx) override {
-
-        }
-
-        void exit(TcpContext& ctx) override {
-            ctx.set_tcpstate(nullptr);
-        }
-    };
-
-    void TcpContext::update()
-    {
-        int loop = 0;
-
-        while (loop++ < 100) {
-            ++frame_;
-
-            if (tcpstate_) {
-                if (frame_ % 100 != 0) {
-                    tcpstate_->update(*this);
-                }
-                else {
-                    tcpstate_->exit(*this);
-                }
-            }
-
-            std::this_thread::sleep_for(std::chrono::milliseconds(10));
-            //_sleep(10);
-        }
+    if (tcp_state_) {
+      if (frame_ % 100 != 0) {
+        tcp_state_->Update(*this);
+      }
+      else {
+        tcp_state_->Exit(*this);
+      }
     }
 
-    namespace TcpStateDemo
-    {
-        void test()
-        {
-            TcpContext ctx;
-
-            auto s1 = new ConnectState();
-            s1->enter(ctx);
-
-            //ctx.update();
-
-            auto s2 = new RunState();
-            s2->enter(ctx);
-
-            //ctx.update();
-
-            auto s3 = new ReconnectState();
-            s3->enter(ctx);
-
-            //ctx.update();
-
-            auto s4 = new CloseState();
-            s4->enter(ctx);
-
-            //ctx.update();
-
-            Safe_Delete(s1);
-            Safe_Delete(s2);
-            Safe_Delete(s3);
-            Safe_Delete(s4);
-        }
-    }
+    SleepMs(10);
+  }
 }
 
-#endif // !__State_TcpState_Inc_H__
+void test() {
+  TcpContext ctx;
+
+  auto s1 = std::make_shared<TcpEstablished>();
+  s1->Enter(ctx);
+
+  //ctx.Update();
+
+  auto s2 = std::make_shared<TcpRun>();
+  s2->Enter(ctx);
+
+  //ctx.Update();
+
+  auto s3 = std::make_shared<TcpReconnect>();
+  s3->Enter(ctx);
+
+  //ctx.Update();
+
+  auto s4 = std::make_shared<TcpClose>();
+  s4->Enter(ctx);
+
+  //ctx.Update();
+}
+
+}

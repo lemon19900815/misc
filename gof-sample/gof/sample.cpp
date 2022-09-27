@@ -86,7 +86,7 @@ int main(int argc, char** argv)
 
     // 状态模式
     State::StatePatternDemo::test();
-    TcpState::TcpStateDemo::test();
+    state::test();
 
     // 空对象模型
     NullObject::NullObjectPatternDemo::test();
