@@ -76,7 +76,7 @@ int main(int argc, char** argv)
     Iterator::IteratorPatternDemo::test();
 
     // 中介模式
-    Mediator::MediatorPatternDemo::test();
+    Mediator::test();
 
     // 备忘录模式
     Memento::MementoPatternDemo::test();
