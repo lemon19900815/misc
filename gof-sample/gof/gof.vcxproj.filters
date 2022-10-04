@@ -166,9 +166,6 @@
     <ClInclude Include="Memento\memento.h">
       <Filter>Behavior\Memento</Filter>
     </ClInclude>
-    <ClInclude Include="Memento\originator.h">
-      <Filter>Behavior\Memento</Filter>
-    </ClInclude>
     <ClInclude Include="Observer\observer.h">
       <Filter>Behavior\Observer</Filter>
     </ClInclude>

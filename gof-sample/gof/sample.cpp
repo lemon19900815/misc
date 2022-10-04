@@ -15,7 +15,7 @@
 #include "Interpreter/expression.h"
 #include "Iterator/container.h"
 #include "Mediator/user.h"
-#include "Memento/originator.h"
+#include "Memento/memento.h"
 #include "Observer/subject.h"
 #include "State/context.h"
 #include "State/tcpstate.h"
@@ -79,7 +79,7 @@ int main(int argc, char** argv)
     Mediator::test();
 
     // 备忘录模式
-    Memento::MementoPatternDemo::test();
+    Memento::test();
 
     // 观察者模式
     Observer::test();

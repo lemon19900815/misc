@@ -168,7 +168,6 @@
     <ClInclude Include="Iterator\iterator.h" />
     <ClInclude Include="Mediator\user.h" />
     <ClInclude Include="Memento\memento.h" />
-    <ClInclude Include="Memento\originator.h" />
     <ClInclude Include="NullObject\customer.h" />
     <ClInclude Include="Observer\observer.h" />
     <ClInclude Include="Observer\subject.h" />
