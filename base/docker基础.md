@@ -2,7 +2,7 @@
 
 ## 1、容器启动
 
-docker run/start -it 容器名/容器id
+`docker run/start -it 容器名/容器id`
 
 ## 2、容器退出
 
@@ -44,3 +44,14 @@ docker run/start -it 容器名/容器id
 - 加载
 
   `docker load < centos7.9-ce.tar`
+
+## 5、**docker cp :**用于容器与主机之间的数据拷贝。
+
+- 拷贝到容器中
+
+  `docker cp file containerid:/root/test/`
+
+- 从容器拷贝到外部
+
+  `docker cp containerid:/root/test/file.txt ./myfolder/`
+

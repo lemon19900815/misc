@@ -1,4 +1,4 @@
-## vector: push_back&emplace_back区别
+## vector.push_back&emplace_back区别
 
 - 首先来看一段代码示例
 
@@ -71,10 +71,8 @@
 - 结论
 
   - 以上代码的分别在`windows`和`linux`下做了测试；
-
-  - `boxes.reserve(10);`指定容器的`capacity`容量，避免扩容导致二者的比较出现额外的影响；
-
+- `boxes.reserve(10);`指定容器的`capacity`容量，避免扩容导致二者的比较出现额外的影响；
   - `emplace_back`只有在<font color=red>通过参数传递</font>，在容器内部构建对象时效率才高（少一次移动构造过程）；在发生扩容时效率反而低于`push_back`，其他时候这二者效果一致；
-  - 其他时候都建议使用`push_back`，而非使用`emplace_back`;
+- 其他时候都建议使用`push_back`，而非使用`emplace_back`;
   - 在通过对象传递时，`push_back`和`emplace_back`结果一致（如果发生扩容，则`push_back`效率更优）。
-
+  - 更多详情可以参考：[条款四十二：考虑使用置入代替插入](https://github.com/CnTransGroup/EffectiveModernCppChinese/blob/master/src/8.Tweaks/item42.md)

@@ -41,6 +41,46 @@
 - xargs使用（-i {}）
 
   - `cmd1 | xargs -i cmd2 {} xxx`
+  
+- 下载yum安装包（yum下载的包保存到本地）
+
+  ```ini
+  #下载yumdownloadonly插件(yum可能已经携带)
+  yum install yum-plugin-downloadonly
+  
+  #yum 下载rpm包到指定目录，只下载不安装
+  yum install --downloadonly --downloaddir=路径  安装包名
+  实例：yum install  --downloadonly --downloaddir=/usr/local perf
+  #安装1
+  rpm -Uvh --force --nodeps *.rpm
+  实例：rpm -Uvh --force --nodeps perf-3.10.0-1160.76.1.el7.x86_64.rpm
+  #安装2：可以直接使用报名进行安装
+  yum intall perf-3.10.0-1160.76.1.el7.x86_64.rpm
+  ```
+
+- top命令 
+
+  ```ini
+  # 进入之后按f键显示每一列的含义；
+  # shift+e切换Mem、Swap显示单位
+  
+  load average: 0.00, 0.01, 0.05 
+  # 系统负载，即任务队列的平均长度。 三个数值分别为 1分钟、5分钟、15分钟前到现在的平均值。
+  
+  Cpu参数详解：
+  	us: 用户占用cpu百分比（平均，可以使用1键切换显示具体每个cpu的占用百分比情况）
+  	sy: 系统占用cpu百分比
+  	ni: 用户进程空间内改变过优先级的进程占用CPU百分比
+  	id: cpu空闲占比
+  	wa: 等待输入输出的CPU时间百分比
+  	hi: 硬中断（Hardware IRQ）占用CPU的百分比
+  	si: 软中断（Software Interrupts）占用CPU的百分比
+  	st: 用于有虚拟cpu的情况，用来指示被虚拟机偷掉的cpu时间
+  ```
+
+  [top命令解释参考]: https://blog.csdn.net/xujiamin0022016/article/details/89072116
+
+  
 
 ## 动态库
 
@@ -69,6 +109,10 @@
     libhello.so.1->libhello.so.1.1.0
     libhello.so ->libhello.so.1
     ```
+
+- zip压缩命令（-r 递归进入目录 ; -y 保留软连接，默认是压缩实际指向的文件）
+
+  `zip -ry lib.zip lib`
 
 ## 其他
 
