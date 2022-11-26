@@ -199,4 +199,60 @@
   tar -cvf - /home | tar -xvf -
   ```
 
+
+
+
+- shell scripts
+
+  ```sh
+  # 1.sh脚本交互，等待用户输入
+  # 可参考vbird-linux-script/sh02.sh
+  
+  # 2.根据date创建不同的文件
+  # 可参考vbird-linux-script/sh03.sh
+  
+  # 3.计算2个数字的乘积
+  # 可参考vbird-linux-script/sh04.sh
+  
+  # 4.test命令（-e:该文件名是否存在；-f：该文件名是否存在且为普通文件；-d：该文件名是否存在且为目录；-r：检测该文件名是否存在且具有“可读”权限；-w：检测该文件名是否存在且具有“可写”权限；-x：检测该文件名是否存在且具有“执行”权限；-a：两个条件是否同时成立；-o：任何一个条件成立；!：反向状态）
+  # 可参考vbird-linux-script/sh05.sh
+  
+  # 5.利用判断符号[]，注意符号之间的空格 [ "$x" == "" ]，并且内容使用""括起来，否则会出现错误;
+  # 多重判断时，使用 -a 或者 -o 连接: [ cond1 -a cond2 ] 或者 [ cond1 -o cond2 ];
+  # 也可分开: [ cond1 ] && [ cond2 ] 或者 [ cond1 ] || [ cond2 ]
+  # 可参考vbird-linux-script/sh06.sh
+  
+  # 6.shell script的默认参数($0,$1...)
+  # /path/script.sh opt1 opt2 opt3
+  # $0              $1    $2   $3
+  # $#: 代表参数个数；$@: 代表除$0脚本之外的所有参数集合
+  # 参数shift操作，移除几个参数，默认1个，也可以自由指定
+  # 可参考vbird-linux-script/sh07.sh
+  
+  # 7.条件判断式 if...then
+  # 可参考vbird-linux-script/sh08.sh
+  
+  # 8.利用case...esac判断
+  # 可参考vbird-linux-script/sh[10|11].sh
+  
+  # 9.利用function功能
+  # 可参考vbird-linux-script/sh11-2.sh
+  
+  # 10.循环：while do done, until do done(不定循环)
+  # 可参考vbird-linux-script/sh[12|13].sh
+  
+  # 11.固定循环：for...do...done
+  # 注意sh15中seq用法，类似python中的range
+  # 可参考vbird-linux-script/sh[14|15|16].sh
+  
+  # 12.使用for...do...done做数值计算
+  # 可参考vbird-linux-script/sh17.sh
+  
+  # 13.脚本的追踪与调试（一般使用sh +x *.sh进行调试）
+  # sh [-nvx] scripts.sh
+  # -n: 不要执行脚本，仅查询语法的问题；
+  # -v: 在执行脚本前，先将脚本的内容输出到屏幕上；
+  # -x: 将使用到的脚本内容显示到屏幕上，这是很有用的参数；
+  ```
+
   
