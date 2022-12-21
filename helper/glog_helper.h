@@ -16,7 +16,7 @@
 // glog初始化设置
 class GlogHelper finnal {
 public:
-  explicit GlogHelper(std::string name, std::string log_dir = "../log") {
+  explicit GlogHelper(std::string&& name, std::string&& log_dir = "../log") {
     // 创建日志输出目录
 #ifdef WIN32
     int ret = _mkdir(log_dir.c_str());
@@ -46,7 +46,7 @@ public:
     std::cout << name << " Log Initialized!" << std::endl;
   }
 
-  ~GLogHelper() {
+  ~GlogHelper() {
     std::cout << "Log Shutdown!" << std::endl;
 
     google::FlushLogFilesUnsafe(0);
