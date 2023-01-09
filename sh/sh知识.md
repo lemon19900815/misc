@@ -256,3 +256,58 @@
   ```
 
   
+
+- su 切换身份（**切换root时，建议使用su -，不使用su**）
+
+  - 总结：若要完整的切换到新用户的环境，必须要使用`su -username` 或`su -l username`，才会连同PATH/USER等变量都转换成新用户的环境；
+  - 使用root切换成任意用户时，并不需要输入新用户的密码；
+
+  ```sh
+  # su命令格式
+  su [-lm] [-c 命令] [username]
+  # 默认是以non-login shell形式切换
+  
+  # su切换身份,默认切换为root用户，但是请注意，该方式是以non-login shell方式切换。
+  # 切换过去可能读取的仍然是当前用户的信息
+  su
+  # 查看当前用户信息
+  id
+  # 查看切换后的用户信息 => 可能获取到的仍然是切换root前的用户数据？
+  # 鸟哥私房菜例子切换仍然获取到vbird的用户信息；但ubuntu（wsl）上获取的是root的信息。是ubuntu和centos发行版本的区别吗？
+  env | grep USER
+  
+  # 为了以正确的方式切换身份，需要使用：su -
+  su -
+  # 查看当前用户信息
+  id
+  # 这里获取的就是root的用户信息了
+  env | grep USER
+  ```
+
+- 查询目前已登陆在系统上面的用户：`w或who`
+
+- `cron`使用（定时任务）
+
+  ```sh
+  # ubuntu使用（wsl默认未开启cron）
+  
+  # 开启cron：编辑/etc/rsyslog.d/50-default.conf文件，取消cron.*前面的#
+  # 重启cron：sudo service rsyslog restart
+  
+  # 开启cron后可以查阅/var/log/cron.log日志，通常木马程序也会执行cron任务
+  
+  # 编辑crontab定时任务(e: 编辑模式，l:列出cron任务，r:删除所有cron任务)
+  crontab [-e|-l|-r]
+  
+  # 每分钟向1.txt写入hello
+  */1 * * * * echo "hello" >> /home/lemon/1.txt
+  --分 时 日 月 周 command--
+  
+  # 每天0点，3点向1.txt写入hello
+  * 0,3 * * * echo "hello" >> /home/lemon/1.txt
+  
+  # 每天0，1，2，3点向1.txt写入hello
+  * 0-3 * * * echo "hello" >> /home/lemon/1.txt
+  ```
+
+  
