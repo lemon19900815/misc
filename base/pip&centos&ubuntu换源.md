@@ -1,0 +1,73 @@
+## 1 windows & linux下设置豆瓣源：
+- pip config set global.index-url http://pypi.douban.com/simple
+- pip config set global.trusted-host pypi.douban.com/simple
+
+- pip临时使用豆瓣源：pip install package -i http://pypi.douban.com/simple/ --trusted-host=pypi.douban.com/simple
+
+## 2 centos安装yum源
+
+### 2.1 centos安装yum源
+
+```sh
+# 备份原repo
+mv /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.bak
+# 下载centos7的repo文件
+wget -O /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-7.repo
+# 把里面所有的http地址都改成https的
+vim /etc/yum.repos.d/CentOS-Base.repo
+
+# 清除缓存
+yum clean all
+# 生成缓存
+yum makecache 
+# 更新yum
+yum update
+```
+
+### 2.2 centos安装epel源（相当于yum额外的软件包）
+在安装epel源之前，先安装epel-release软件包，它会自动配置yum仓库
+
+```sh
+# 安装软件包
+yum install -y epel-release
+# 增加epel源
+wget -O /etc/yum.repos.d/epel-7.repo http://mirrors.aliyun.com/repo/epel-7.repo
+
+# 清除缓存
+yum clean all
+# 生成缓存
+yum makecache 
+# 更新yum
+yum update
+```
+
+## 3 ubuntu更换国内源
+
+### 3.1 更换国内清华源（阿里源有问题）
+
+```sh
+# 备份
+cp /etc/apt/source.list /etc/apt/source.list.bak
+
+# 编辑，删除所有内容
+vim /etc/apt/source.list
+
+# 填入清华源
+deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ bionic main restricted universe multiverse
+deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ bionic main restricted universe multiverse
+deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ bionic-updates main restricted universe multiverse
+deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ bionic-updates main restricted universe multiverse
+deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ bionic-backports main restricted universe multiverse
+deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ bionic-backports main restricted universe multiverse
+deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ bionic-security main restricted universe multiverse
+deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ bionic-security main restricted universe multiverse
+deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ bionic-proposed main restricted universe multiverse
+deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ bionic-proposed main restricted universe multiverse
+
+# 更新缓存
+apt-get update
+apt-get upgrade
+```
+
+
+
