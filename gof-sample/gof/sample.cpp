@@ -70,7 +70,7 @@ int main(int argc, char** argv)
     Command::test();
 
     // 解释器模式
-    Interpreter::InterpreterPatternDemo::test();
+    Interpreter::test();
 
     // 迭代器模式
     Iterator::IteratorPatternDemo::test();

@@ -3,91 +3,77 @@
 
 #include "../stdafx.h"
 
-namespace Interpreter
-{
-	class Expression
-	{
-	public:
-		virtual ~Expression() {
+namespace Interpreter {
 
-		}
+class Expression {
+public:
+  virtual ~Expression() { }
+  CLASS_PTR(Expression);
 
-		virtual bool interpret(std::string context) = 0;
-	};
+  virtual bool Interpret(std::string context) = 0;
+};
 
-	class TerminalExpression : public Expression
-	{
-	public:
-		TerminalExpression(std::string data) {
-			data_ = data;
-		}
+class TerminalExpression : public Expression {
+public:
+  TerminalExpression(std::string data) {
+    data_ = data;
+  }
 
-		bool interpret(std::string context) override {
-			return context.find(data_) != std::string::npos;
-		}
+  bool Interpret(std::string context) override {
+    return context.find(data_) != std::string::npos;
+  }
 
-	private:
-		std::string data_;
-	};
+private:
+  std::string data_;
+};
 
-	class AndExpression : public Expression
-	{
-	public:
-		AndExpression(Expression* lhs, Expression* rhs) {
-			lhs_ = lhs;
-			rhs_ = rhs;
-		}
+class AndExpression : public Expression {
+public:
+  AndExpression(Expression::Ptr lhs, Expression::Ptr rhs) {
+    lhs_ = lhs;
+    rhs_ = rhs;
+  }
 
-		bool interpret(std::string context) override {
-			return lhs_->interpret(context) && rhs_->interpret(context);
-		}
+  bool Interpret(std::string context) override {
+    return lhs_->Interpret(context) && rhs_->Interpret(context);
+  }
 
-	private:
-		Expression* lhs_;
-		Expression* rhs_;
-	};
+private:
+  Expression::Ptr lhs_;
+  Expression::Ptr rhs_;
+};
 
-	class OrExpression : public Expression
-	{
-	public:
-		OrExpression(Expression* lhs, Expression* rhs) {
-			lhs_ = lhs;
-			rhs_ = rhs;
-		}
+class OrExpression : public Expression {
+public:
+  OrExpression(Expression::Ptr lhs, Expression::Ptr rhs) {
+    lhs_ = lhs;
+    rhs_ = rhs;
+  }
 
-		bool interpret(std::string context) override {
-			return lhs_->interpret(context) || rhs_->interpret(context);
-		}
+  bool Interpret(std::string context) override {
+    return lhs_->Interpret(context) || rhs_->Interpret(context);
+  }
 
-	private:
-		Expression* lhs_;
-		Expression* rhs_;
-	};
+private:
+  Expression::Ptr lhs_;
+  Expression::Ptr rhs_;
+};
 
-	namespace InterpreterPatternDemo
-	{
-		void test()
-		{
-			std::cout << "\n\n interpreter pattern." << std::endl;
+void test() {
+  LOG("\n\n interpreter pattern.");
 
-			Expression* male = new TerminalExpression("male");
-			Expression* female = new TerminalExpression("female");
-			Expression* married = new TerminalExpression("married");
+  std::shared_ptr<Expression> male = std::make_shared<TerminalExpression>("male");
+  std::shared_ptr<Expression>  female = std::make_shared<TerminalExpression>("female");
+  std::shared_ptr<Expression>  married = std::make_shared<TerminalExpression>("married");
 
-			Expression* femaleAndMarried = new AndExpression(female, married);
-			Expression* maleOrMarried = new OrExpression(male, married);
+  std::shared_ptr<Expression>  femaleAndMarried = std::make_shared<AndExpression>(female, married);
+  std::shared_ptr<Expression>  maleOrMarried = std::make_shared<OrExpression>(male, married);
 
-			std::cout << "John is a male ? " << (male->interpret("male") ? "Yes" : "No") << std::endl;
-			std::cout << "Julie is a married women ? " << (femaleAndMarried->interpret("female married") ? "Yes" : "No") << std::endl;
-			std::cout << "Jack is a male or married ? " << (maleOrMarried->interpret("married") ? "Yes" : "No") << std::endl;
+  LOG("John is a male ? " << (male->Interpret("male") ? "Yes" : "No"));
+  LOG("Julie is a married women ? " << (femaleAndMarried->Interpret("female married") ? "Yes" : "No"));
+  LOG("Jack is a male or married ? " << (maleOrMarried->Interpret("married") ? "Yes" : "No"));
+}
 
-			Safe_Delete(male);
-			Safe_Delete(female);
-			Safe_Delete(married);
-			Safe_Delete(femaleAndMarried);
-			Safe_Delete(maleOrMarried);
-		}
-	}
 }
 
 #endif //  __Interpreter_Expression_Inc_H__
