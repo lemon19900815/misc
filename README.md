@@ -4,7 +4,7 @@
 
 ## algorithm
 
-- 插入排序 `insertSort`
+- 插入排序 `insertSort` 
 
 - 希尔排序 `shellSort`
 
