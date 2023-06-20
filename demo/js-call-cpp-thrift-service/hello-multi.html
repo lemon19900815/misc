@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Thrift Demo</title>
+</head>
+<body>
+  <h1>Thrift Demo</h1>
+  <button onclick="callService()">Call Service</button>
+  <p id="result"></p>
+  <script src="thrift.js"></script>
+  <script src="gen-js/HelloWorld.js"></script>
+  <script>
+    // 调用 Thrift 服务
+    function callService() {
+        for(var i = 0; i < 10; ++i) {
+            // 创建 Thrift 传输和协议
+            var transport = new Thrift.TXHRTransport("http://localhost:9090");
+            var protocol = new Thrift.TJSONProtocol(transport);
+
+            // 创建 Thrift 服务客户端
+            var client = new HelloWorldClient(protocol);
+
+            client.sayHello("hello server", function(result) {
+                document.getElementById("result").innerHTML += `<p>${result}</p>`;
+            });
+        }
+    }
+    
+    setInterval(function() {
+        callService();
+    }, 1000);
+  </script>
+</body>
+</html>
