@@ -53,3 +53,10 @@ git log --abbrev-commit
 git log --pretty=oneline --abbrev-commit
 ```
 
+## git remote -v
+
+```sh
+# 显示git远端地址
+git remote -v
+```
+

@@ -1,0 +1,4 @@
+# windows
+.vs
+x64
+*.user
