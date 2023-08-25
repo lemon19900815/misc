@@ -1,0 +1,9 @@
+{
+	"project": "your project name",
+	"target": "FTPClient.hpp",
+	"sources": [
+		"../FTPClient.cpp",
+        "../CurlHandle.cpp"
+	],
+	"include_paths": ["include"]
+}
