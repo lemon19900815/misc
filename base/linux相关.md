@@ -1,4 +1,15 @@
 ## Linux命令(centos)
+
+- 查看系统信息
+
+  ```sh
+  # 列出所有版本信息
+  lsb_release -a
+  
+  # 适用于所有的Linux发行版
+  cat /etc/issue
+  ```
+
 - 查看端口占用
   - 方式1：`lsof -i:8080`
   - 方式2：`netstat -tunlp|grep 8080` 
