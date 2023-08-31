@@ -8,18 +8,33 @@ reference:
 
 2、https://zhuanlan.zhihu.com/p/534439206
 
-```cmake
-1、指定 cmake 的最小版本
-cmake_minimum_required(VERSION 3.4.1)
+3、[csdn: add_custom_target](https://blog.csdn.net/MacKendy/article/details/122693478?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522169344440516800211537054%2522%252C%2522scm%2522%253A%252220140713.130102334..%2522%257D&request_id=169344440516800211537054&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~top_positive~default-1-122693478-null-null.142^v93^chatgptT3_2&utm_term=add_custom_target&spm=1018.2226.3001.4187)
 
-2、设置项目名称，它会引入两个变量 demo_BINARY_DIR 和 demo_SOURCE_DIR，同时，cmake 自动定义了两个等价
-的变量 PROJECT_BINARY_DIR 和 PROJECT_SOURCE_DIR。
+4、https://github.com/wzpan/cmake-demo/tree/master
+
+### 1.1 指定 cmake 的最小版本
+
+```cmake
+cmake_minimum_required(VERSION 3.4.1 REQUIRED)
+```
+
+### 1.2 设置项目名称
+
+```cmake
 project(demo)
 
-3、设置编译类型，add_library 默认生成是静态库
+# 它会引入两个变量 demo_BINARY_DIR 和 demo_SOURCE_DIR，同时，cmake 自动定义了两个等价PROJECT_BINARY_DIR 和 PROJECT_SOURCE_DIR.
+```
+
+### 1.3 设置编译类型
+
+```cmake
+# add_library 默认生成是静态库
+
 add_executable(demo demo.cpp) # 生成可执行文件
 add_library(common STATIC util.cpp) # 生成静态库
 add_library(common SHARED util.cpp) # 生成动态库或共享库
+
 以上命令将生成：
 在 Linux 下是：
         demo
@@ -29,37 +44,46 @@ add_library(common SHARED util.cpp) # 生成动态库或共享库
         demo.exe
         common.lib
         common.dll
+```
 
-4、明确指定包含哪些源文件
+### 1.4 明确指定包含哪些源文件
+
+```cmake
 add_library(demo demo.cpp test.cpp util.cpp)
+```
 
-5、设置变量
-5.1 set 直接设置变量的值
+### 1.5 设置变量
+
+```cmake
+# set 直接设置变量的值
 set(SRC_LIST main.cpp test.cpp)
 add_executable(demo ${SRC_LIST})
 set(ROOT_DIR ${CMAKE_SOURCE_DIR}) #CMAKE_SOURCE_DIR默认为当前cmakelist.txt目录
 
-5.2 set追加设置变量的值
+# set追加设置变量的值
 set(SRC_LIST main.cpp)
 set(SRC_LIST ${SRC_LIST} test.cpp)
 add_executable(demo ${SRC_LIST})
 
-5.3 list追加或者删除变量的值
+# list追加或者删除变量的值
 set(SRC_LIST main.cpp)
 list(APPEND SRC_LIST test.cpp)
 list(REMOVE_ITEM SRC_LIST main.cpp)
 add_executable(demo ${SRC_LIST})
+```
 
-6、搜索文件
-6.1 搜索当前目录下的所有.cpp文件，并命名为SRC_LIST，它会查找目录下的.c,.cpp ,.mm,.cc 等等C/C++语言后缀的文件名
+### 1.6 搜索文件
+
+```cmake
+# 搜索当前目录下的所有.cpp文件，并命名为SRC_LIST，它会查找目录下的.c,.cpp ,.mm,.cc 等等C/C++语言后缀的文件名
 aux_source_directory(. SRC_LIST) 
 add_library(demo ${SRC_LIST})
 
-6.2 自定义搜索规则
+# 自定义搜索规则
 aux_source_directory(. SRC_LIST)
 aux_source_directory(protocol SRC_PROTOCOL_LIST)
 add_library(demo ${SRC_LIST} ${SRC_PROTOCOL_LIST})
-或者
+# 或者
 file(GLOB SRC_LIST "*.cpp" "protocol/*.cpp")
 add_library(demo ${SRC_LIST})
 # 或者
@@ -70,53 +94,73 @@ add_library(demo ${SRC_LIST} ${SRC_PROTOCOL_LIST})
 file(GLOB_RECURSE SRC_LIST "*.cpp") #递归搜索
 FILE(GLOB SRC_PROTOCOL RELATIVE "protocol" "*.cpp") # 相对protocol目录下搜索
 add_library(demo ${SRC_LIST} ${SRC_PROTOCOL_LIST})
+```
 
-7、设置包含的目录，头文件目录
+### 1.7 设置包含的目录，头文件目录
+
+```cmake
 include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_CURRENT_BINARY_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
-Linux 下还可以通过如下方式设置包含的目录
+# Linux 下还可以通过如下方式设置包含的目录
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -I${CMAKE_CURRENT_SOURCE_DIR}")
+```
 
-8、设置链接库搜索目录
+### 1.8 设置链接库搜索目录
+
+```cmake
 link_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}/libs
 )
-Linux 下还可以通过如下方式设置包含的目录
+# Linux 下还可以通过如下方式设置包含的目录
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -L${CMAKE_CURRENT_SOURCE_DIR}/libs")
+```
 
-9、设置 target 需要链接的库
-9.1 指定链接动态库或静态库
+### 1.9 设置 target 需要链接的库
+
+```cmake
+# 指定链接动态库或静态库
 target_link_libraries(demo libface.a) # 链接libface.a
 target_link_libraries(demo libface.so) # 链接libface.so
 
-9.2 指定全路径
+# 指定全路径
 target_link_libraries(demo ${CMAKE_CURRENT_SOURCE_DIR}/libs/libface.a)
 target_link_libraries(demo ${CMAKE_CURRENT_SOURCE_DIR}/libs/libface.so)
 
-9.3 指定链接多个库
+# 指定链接多个库
 target_link_libraries(demo
     ${CMAKE_CURRENT_SOURCE_DIR}/libs/libface.a
     boost_system.a
     boost_thread
     pthread)
+ 
+# 注意：target_link_libraries必须在add_excutable或者add_library之后，否则会出现cmake编译错误
+```
 
-10、打印信息
+### 1.10 打印信息
+
+```cmake
 message(${PROJECT_SOURCE_DIR})
 message("build with debug mode")
 message(WARNING "this is warnning message")
 message(FATAL_ERROR "this build has many error") # FATAL_ERROR 会导致编译失败
+```
 
-11.包含其它 cmake 文件
+### 1.11 包含其它 cmake 文件
+
+```cmake
 include(./common.cmake) # 指定包含文件的全路径
 include(def) # 在搜索路径中搜索def.cmake文件
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake) # 设置include的搜索路径
+```
 
-12、条件控制
-12.1 if…elseif…else…endif
-逻辑判断和比较：
+### 1.12 条件控制
+
+```cmake
+# if…elseif…else…endif
+# 逻辑判断和比较：
 if (expression)：expression 不为空（0,N,NO,OFF,FALSE,NOTFOUND）时为真
 if (not exp)：与上面相反
 if (var1 AND var2)
@@ -129,7 +173,7 @@ if (DEFINED var)：如果变量被定义为真
 if (var MATCHES regex)：给定的变量或者字符串能够匹配正则表达式 regex 时为真，此处 var 可以用 var 名，也可以用 ${var}
 if (string MATCHES regex)
 
-数字比较：
+# 数字比较：
 if (variable LESS number)：LESS 小于
 if (string LESS number)
 if (variable GREATER number)：GREATER 大于
@@ -137,7 +181,7 @@ if (string GREATER number)
 if (variable EQUAL number)：EQUAL 等于
 if (string EQUAL number)
 
-字母表顺序比较：
+# 字母表顺序比较：
 if (variable STRLESS string)
 if (string STRLESS string)
 if (variable STRGREATER string)
@@ -151,9 +195,12 @@ foreach(i RANGE 1 9 2)
     message(${i})
 endforeach(i)
 # 输出：13579
+```
 
-13、常用变量
-13.1 预定义变量
+### 1.13 常用变量
+
+```cmake
+# 预定义变量
 PROJECT_SOURCE_DIR：工程的根目录
 PROJECT_BINARY_DIR：运行 cmake 命令的目录，通常是 ${PROJECT_SOURCE_DIR}/build
 PROJECT_NAME：返回通过 project 命令定义的项目名称
@@ -170,11 +217,11 @@ RUNTIME_OUTPUT_DIRECTORY: 可执行文件的输出目录
 CMAKE_LIBRARY_OUTPUT_DIRECTORY: lib库的输出目录（全局）
 LIBRARY_OUTPUT_DIRECTORY：lib库的输出目录
 
-13.2 环境变量
+# 环境变量
 $ENV{Name}
 set(ENV{Name} value) # 这里没有“$”符号
 
-13.3 系统信息
+# 系统信息
 CMAKE_MAJOR_VERSION：cmake 主版本号，比如 3.4.1 中的 3
 CMAKE_MINOR_VERSION：cmake 次版本号，比如 3.4.1 中的 4
 CMAKE_PATCH_VERSION：cmake 补丁等级，比如 3.4.1 中的 1
@@ -184,14 +231,20 @@ CMAKE_SYSTEM_VERSION：系统版本，比如 2.6.22
 CMAKE_SYSTEM_PROCESSOR：处理器名称，比如 i686
 UNIX：在所有的类 UNIX 平台下该值为 TRUE，包括 OS X 和 cygwin
 WIN32：在所有的 win32 平台下该值为 TRUE，包括 cygwin
+```
 
-14、主要开关选项
+### 1.14 主要开关选项
+
+```cmake
 BUILD_SHARED_LIBS：这个开关用来控制默认的库编译方式，如果不进行设置，使用 add_library 又没有指定库类型的情况下，默认编译生成的库都是静态库。如果 set(BUILD_SHARED_LIBS ON) 后，默认生成的为动态库
 CMAKE_C_FLAGS：设置 C 编译选项，也可以通过指令 add_definitions() 添加
 CMAKE_CXX_FLAGS：设置 C++ 编译选项，也可以通过指令 add_definitions() 添加
 add_definitions(-DENABLE_DEBUG -DABC) # 参数之间用空格分隔
+```
 
-15、install
+### 1.15 install
+
+```cmake
 # 指定 MathFunctions 库的安装路径
 install (TARGETS MathFunctions DESTINATION bin)
 install (FILES MathFunctions.h DESTINATION include)
@@ -199,6 +252,45 @@ install (FILES MathFunctions.h DESTINATION include)
 # 指定install安装目录
 # linux下默认为路劲：/usr/local/bin、/usr/local/include、/usr/local/lib
 set(CMAKE_INSTALL_PREFIX ${PROJECT_BINARY_DIR}/install)
+```
+
+### 1.16 add_custom_target
+
+```cmake
+# 添加cmake执行命令
+add_custom_target(
+    print-pwd
+    ALL # 编译时就会执行，缺少该关键字，需要执行make print-pwd才会生效
+    COMMAND "pwd"
+)
+
+# 添加依赖关系depend-print-pwd依赖print-pwd命令
+add_custom_target(
+    depend-print-pwd
+    COMMAND "echo" "depend pwd" # 注意command参数使用空格进行传递，不能使用 "echo 'depend pwd'"
+    DEPENDS print-pwd
+)
+
+# 指定command命令的所在目录（支持绝对路径和相对路径）
+add_custom_target(
+    work-dir
+    COMMAND "pwd"
+    WORKING_DIRECTORY "/root/lemon/cmake-test/build" # 绝对路径 or 相对路径
+)
+```
+
+### 1.17 cpack打包
+
+```cmake
+# 打包：cmake编译完成之后执行以下命令
+# 1. cpack -C CPackConfig.cmake：生成二进制安装包
+# 2. cpack -C CPackSourceConfig.cmake：生成源码安装包
+include (InstallRequiredSystemLibraries)
+set (CPACK_RESOURCE_FILE_LICENSE "${CMAKE_SOURCE_DIR}/License.txt")
+set (CPACK_PACKAGE_VERSION_MAJOR "0")
+set (CPACK_PACKAGE_VERSION_MINOR "0")
+set (CPACK_PACKAGE_VERSION_PATCH "1")
+include (CPack)
 ```
 
 ## 2. cmakelists.txt示例
@@ -219,7 +311,7 @@ if(not CMAKE_BUILD_TYPE)
 endif()
 
 # 编译平台：WINDOWS|LINUX
-if(MSVC)
+if(WIN32)
     add_definitions(-DWINDOWS)
 else()
     add_definitions(-DLINUX)
@@ -234,6 +326,9 @@ endif()
 
 message(STATUS "Build type: ${CMAKE_BUILD_TYPE}, Platform: ${CMAKE_SYSTEM_NAME}")
 
+# 编译单元测试选项
+option(BUILD_TESTING "build tests or not" OFF)
+
 # 设置包含目录
 include_directories(third_party/openssl
                     third_party/libevent
@@ -241,7 +336,7 @@ include_directories(third_party/openssl
                     third_party/doctest)
 
 # 链接库路径
-if(WINDOWS)
+if(WIN32)
     if(CMAKE_BUILD_TYPE STREQUAL "Debug")
         link_directories(target/x64-windows/lib/debug/lib)
     else()
@@ -256,7 +351,7 @@ else()
 endif()
 
 # 设置可执行文件目录和安装目录
-if(WINDOWS)
+if(WIN32)
     message(STATUS "ignore set (bin and install)'s dir!!!")
 else()
     if(CMAKE_BUILD_TYPE STREQUAL "Debug")
@@ -268,7 +363,7 @@ else()
 endif()
 
 # 设置依赖库
-if(WINDOWS)
+if(WIN32)
     set(OpensslLib libssl.lib libcrypto.lib)
     set(ThriftLib libthrift.lib libthriftnb.lib zlibd.lib event_cored.lib event_extrad.lib eventd.lib)
     set(CurlLib libcurl-d.lib)
@@ -303,7 +398,27 @@ LIST(REMOVE_ITEM SRC_LIST ${CMAKE_SOURCE_DIR}/src/gen-cpp/TestService_server.ske
 add_executable(${PROJECT_NAME} ${SRC_LIST})
 target_link_libraries(${PROJECT_NAME} ${ALL_LIBS})
 
-#install(FILES ${ALL_LIBS} DESTINATION ${CMAKE_INSTALL_PREFIX})
-#install(TARGETS ${PROJECT_NAME} DESTINATION ${CMAKE_INSTALL_PREFIX})
+if(UNIX)
+    # 查找依赖的动态库：一般*.so为软连接，所以需要install所有so库
+    if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+        FILE(GLOB DEP_LIBS "${CMAKE_SOURCE_DIR}/target/x64-linux/debug/lib/*.so.*")
+    else()
+        FILE(GLOB DEP_LIBS "${CMAKE_SOURCE_DIR}/target/x64-linux/lib/*.so.*")
+    endif()
+    # 安装依赖库
+    install(FILES ${DEP_LIBS} DESTINATION lib)
+    # 安装可执行程序
+    install(TARGETS ${PROJECT_NAME} DESTINATION bin)
+endif()
+
+# 打包：cmake编译完成之后执行以下命令
+# 1. cpack -C CPackConfig.cmake：生成二进制安装包
+# 2. cpack -C CPackSourceConfig.cmake：生成源码安装包
+include (InstallRequiredSystemLibraries)
+set (CPACK_RESOURCE_FILE_LICENSE "${CMAKE_SOURCE_DIR}/License.txt")
+set (CPACK_PACKAGE_VERSION_MAJOR "0")
+set (CPACK_PACKAGE_VERSION_MINOR "0")
+set (CPACK_PACKAGE_VERSION_PATCH "1")
+include (CPack)
 ```
 
