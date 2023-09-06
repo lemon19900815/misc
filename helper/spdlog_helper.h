@@ -38,10 +38,11 @@ public:
         auto date_time = get_time_fmt("%Y%m%d-%H%M%S");
         auto name = fmt::format("{}{}.txt", log_dir, date_time);
 
-        constexpr auto kMaxLogFileSize = 1024 * 1024 * 10;
+        constexpr auto kMaxLogFileSize = 1024 * 1024 * 100;
+        constexpr auto kMaxFiles = 200000; // 最大文件数量200000
 
         sinks.push_back(std::make_shared<rotating_file_sink_mt>(
-                            name, kMaxLogFileSize, 0));
+                            name, kMaxLogFileSize, kMaxFiles));
         sinks.back()->set_level(spdlog::level::info);
 
         std::shared_ptr<spdlog::logger> combined_logger;
