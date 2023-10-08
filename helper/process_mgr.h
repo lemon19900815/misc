@@ -2,6 +2,7 @@
 #define __PROCESS_MGR_H__
 
 #include <filesystem> // c++17
+namespace fs = std::filesystem;
 
 // 进程管理控制块（接口部分）
 namespace process
@@ -40,20 +41,8 @@ bool is_running(const std::string& path_name);
 // 获取绝对路径
 static std::string get_abspath(const std::string& path_name)
 {
-    auto tmp_path_name = path_name;
-    if (tmp_path_name.size() > 2 &&
-        tmp_path_name[0] == '.' &&
-        tmp_path_name[1] == '/')
-    {
-        tmp_path_name = tmp_path_name.substr(2);
-    }
-
-    namespace fs = std::filesystem;
-
-    fs::path pname(tmp_path_name);
-    pname = fs::absolute(pname);
-
-    return pname.string();
+    std::error_code ec;
+    return fs::canonical(fs::path{ path_name }, ec).string();
 }
 
 #if defined(_WIN32) || defined(_WIN64)
@@ -63,7 +52,6 @@ static std::string get_abspath(const std::string& path_name)
 // 启动进程
 int process::start(const std::string& path_name, const std::string& args)
 {
-    namespace fs = std::filesystem;
     auto pname = fs::path(get_abspath(path_name));
 
     if (!fs::exists(pname))
@@ -240,7 +228,6 @@ int get_pid_by_name(const char* pname)
 // 启动进程
 int process::start(const std::string& path_name, const std::string& args)
 {
-    namespace fs = std::filesystem;
     auto pname = fs::path(get_abspath(path_name));
 
     if (!fs::exists(pname))

@@ -12,72 +12,107 @@
 #include <ctime>
 #include <iostream>
 
-#ifdef _WIN32 || WIN32
+#ifdef _WIN32
 #include <Windows.h>
 #include <ImageHlp.h>
 #include <atlstr.h>
 
 #pragma comment(lib, "DbgHelp.lib")
 
-static std::string Timestamp2Str(time_t ts) {
+static std::string timestamp2Str(time_t ts) {
     struct tm* t = std::localtime(&ts);
     if (!t) return "";
 
     char buff[64];
     snprintf(buff, sizeof(buff),
-        "%d-%02d-%02d-%02d-%02d-%02d",
-        t->tm_year + 1900, t->tm_mon + 1,
-        t->tm_mday, t->tm_hour,
-        t->tm_min, t->tm_sec);
+             "%d-%02d-%02d-%02d-%02d-%02d",
+             t->tm_year + 1900, t->tm_mon + 1,
+             t->tm_mday, t->tm_hour,
+             t->tm_min, t->tm_sec);
 
     return buff;
 }
 
-LPCWSTR stringToLPCWSTR(std::string orig)
+std::wstring stringToWstring(std::string orig)
 {
+    std::wstring result;
+    result.resize(orig.length() - 1, 0);
+
     size_t origsize = orig.length() + 1;
     size_t convertedChars = 0;
-    wchar_t *wcstring = (wchar_t *)malloc(sizeof(wchar_t)*(orig.length() - 1));
-    mbstowcs_s(&convertedChars, wcstring, origsize, orig.c_str(), _TRUNCATE);
 
-    return wcstring;
+    mbstowcs_s(&convertedChars, result.data(),
+               origsize, orig.c_str(), _TRUNCATE);
+
+    return result;
 }
 
-long __stdcall callback(_EXCEPTION_POINTERS* excp) {
+long __stdcall crashHandler(_EXCEPTION_POINTERS* excp) {
     auto now_ts = std::chrono::duration_cast<std::chrono::seconds>(
         std::chrono::system_clock::now().time_since_epoch()).count();
-    auto dump_time = Timestamp2Str(now_ts);
+    auto dump_time = timestamp2Str(now_ts);
 
 #ifdef UNICODE
-    auto dump_file = stringToLPCWSTR(dump_time + ".dmp");
-
-    HANDLE lhDumpFile = CreateFile(dump_file,
-        GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
-    free((void*)dump_file);
+    auto dump_filename = stringToWstring(dump_time + ".dmp");
 #else
-    HANDLE lhDumpFile = CreateFile((dump_time + ".dmp").c_str(),
-        GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+    auto dump_filename = dump_time + ".dmp";
 #endif
 
-    MINIDUMP_EXCEPTION_INFORMATION loExceptionInfo;
-    loExceptionInfo.ExceptionPointers = excp;
-    loExceptionInfo.ThreadId = GetCurrentThreadId();
-    loExceptionInfo.ClientPointers = TRUE;
+    HANDLE dump_file = CreateFile(dump_filename.c_str(),
+                                  GENERIC_WRITE, 0, NULL,
+                                  CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
 
-    MiniDumpWriteDump(GetCurrentProcess(),
-        GetCurrentProcessId(), lhDumpFile,
-        MiniDumpNormal, &loExceptionInfo, NULL, NULL);
+    if (dump_file != nullptr)
+    {
+        MINIDUMP_EXCEPTION_INFORMATION loExceptionInfo;
+        loExceptionInfo.ExceptionPointers = excp;
+        loExceptionInfo.ThreadId = GetCurrentThreadId();
+        loExceptionInfo.ClientPointers = TRUE;
 
-    CloseHandle(lhDumpFile);
+        MiniDumpWriteDump(GetCurrentProcess(),
+                          GetCurrentProcessId(), dump_file,
+                          MiniDumpNormal, &loExceptionInfo, NULL, NULL);
+
+        CloseHandle(dump_file);
+    }
 
     return EXCEPTION_EXECUTE_HANDLER;
+}
+
+// 防止CRT（C runtime）函数报错可能捕捉不到
+void disableSetUnhandledExceptionFilter()
+{
+    auto lib = LoadLibrary(L"kernel32.dll");
+    if (!lib)
+    {
+        return;
+    }
+
+    void* addr = (void*)GetProcAddress(lib, "SetUnhandledExceptionFilter");
+    if (addr)
+    {
+        unsigned char code[16];
+        int size = 0;
+
+        code[size++] = 0x33;
+        code[size++] = 0xC0;
+        code[size++] = 0xC2;
+        code[size++] = 0x04;
+        code[size++] = 0x00;
+
+        DWORD dwOldFlag, dwTempFlag;
+        VirtualProtect(addr, size, PAGE_READWRITE, &dwOldFlag);
+        WriteProcessMemory(GetCurrentProcess(), addr, code, size, NULL);
+        VirtualProtect(addr, size, dwOldFlag, &dwTempFlag);
+    }
 }
 
 // windows平台宕机生成mini.dmp文件，使用vs打开dmp文件辅助定位问题
 class DumpHelper {
 public:
     DumpHelper() {
-        SetUnhandledExceptionFilter(callback);
+        SetUnhandledExceptionFilter(crashHandler);
+        disableSetUnhandledExceptionFilter();
     }
 
     ~DumpHelper() {

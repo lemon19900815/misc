@@ -53,6 +53,10 @@ public:
         combined_logger->flush_on(spdlog::level::trace);
 
         spdlog::set_default_logger(combined_logger);
+
+        // Flush all *registered* loggers using a worker thread every 3 seconds.
+        // note: registered loggers *must* be thread safe for this to work correctly!
+        spdlog::flush_every(std::chrono::seconds(30));
     }
 
 private:
