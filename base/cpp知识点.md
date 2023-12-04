@@ -18,7 +18,7 @@ cpp-记录开发过程中遇到的问题、原因、解决办法。
 
 - Linux：filetime 是以system time(UTC)的时间为准，但是实际在Ubuntu下，获取的file_time_type的当前时间是负数。
 
-  *阅读源码也没有发现造成ubuntu下该时间为负数的原因；最开始以为是_GLIBCXX_USE_ST_MTIM使用的结构体不一样导致，但实际测试发现这2个结构体的值是一样的；准备下载gcc的源码，再深入追踪一下--见下节。*
+  *最初阅读源码并没有发现造成ubuntu下该时间为负数的原因；最开始以为是_GLIBCXX_USE_ST_MTIM使用的结构体不一样导致，但实际测试发现这2个结构体的值是一样的；准备下载gcc的源码，再深入追踪一下--见下节。*
 
   ```c++
     inline std::chrono::system_clock::time_point
