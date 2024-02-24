@@ -1,13 +1,13 @@
 ## 1 pip windows & linux
 
 ```
-豆瓣源：http://pypi.douban.com/simple
+豆瓣源（失效）：http://pypi.douban.com/simple
 清华源：https://pypi.tuna.tsinghua.edu.cn/simple
 阿里云：http://mirrors.aliyun.com/pypi/simple
 
 # 设置pip使用的源
-pip config set global.index-url http://pypi.douban.com/simple
-pip config set global.trusted-host pypi.douban.com/simple
+pip config set global.index-url http://mirrors.aliyun.com/pypi/simple
+pip config set global.trusted-host mirrors.aliyun.com/pypi/simple
 
 # pip临时使用某个源
 pip install package -i source_url --trusted-host=source_url
