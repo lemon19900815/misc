@@ -20,7 +20,7 @@
 指定运行动态库链接路径命令`-Wl,-rpath`：
 
 - `gcc -o myprogram myprogram.c -Wl,-rpath,/path/to/library `（在这个示例中，`-Wl` 选项用于将后面的参数传递给链接器，`-rpath` 选项用于指定运行时库路径，`/path/to/library` 应该替换为实际的动态库路径。）
-- 使用`cmake`修改：`set(CMAKE_INSTALL_RPATH "$ORIGIN./")`；
+- 使用`cmake`修改：`set_target_properties(${PROJECT_NAME} PROPERTIES INSTALL_RPATH "./")`；（注：默认install之后会去掉`runpath`属性）
 
 ## 2. 编译后修改
 
