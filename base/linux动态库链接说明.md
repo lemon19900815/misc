@@ -49,3 +49,6 @@ chrpath -r "$ORIGIN./" your_program
 
 在程序运行时，可以通过设置环境变量 `LD_LIBRARY_PATH` 来指定动态链接器在加载动态库时搜索的路径，或者通过修改 `/etc/ld.so.conf` 文件添加动态库搜索路径。
 
+## 4. 其他
+
+- 可以使用[linuxdeployqt](https://github.com/probonopd/linuxdeployqt)工具打包软件或动态库
