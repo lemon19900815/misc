@@ -422,3 +422,23 @@ set (CPACK_PACKAGE_VERSION_PATCH "1")
 include (CPack)
 ```
 
+
+
+## 3. 其他
+
+vs版本映射关系表：
+
+|        -G 参数        | 内部版本 | 其他 |
+| :-------------------: | :------: | :--: |
+| Visual Studio 17 2022 |   v143   |      |
+| Visual Studio 16 2019 |   v142   |      |
+| Visual Studio 15 2017 |   v141   |      |
+| Visual Studio 14 2015 |   v140   |      |
+
+
+
+```powershell
+# cmake编译指定vs版本
+cmake -G "Visual Studio 16 2019" ../ -B build -DCMAKE_BUILD_TYPE=Debug
+```
+
