@@ -252,6 +252,9 @@ install (FILES MathFunctions.h DESTINATION include)
 # 指定install安装目录
 # linux下默认为路劲：/usr/local/bin、/usr/local/include、/usr/local/lib
 set(CMAKE_INSTALL_PREFIX ${PROJECT_BINARY_DIR}/install)
+
+# 注：默认install之后会去掉`runpath`属性；可以使用以下方式设置动态库的rpath；详情请参考[linux动态库链接说明](./linux动态库链接说明.md)
+set_target_properties(${PROJECT_NAME} PROPERTIES INSTALL_RPATH "./")
 ```
 
 ### 1.16 add_custom_target
@@ -440,5 +443,9 @@ vs版本映射关系表：
 ```powershell
 # cmake编译指定vs版本
 cmake -G "Visual Studio 16 2019" ../ -B build -DCMAKE_BUILD_TYPE=Debug
+
+# 构建好生成器对应的工程后，直接使用cmake调用生成器执行编译
+# 采用这种方式可以避免不同生成器之间的差异，从而在cmake层面实现构建方式的统一
+cmake --build  [生成器工程目录，这里就是build]
 ```
 
