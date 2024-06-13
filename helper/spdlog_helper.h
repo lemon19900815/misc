@@ -50,7 +50,7 @@ public:
         combined_logger = std::make_shared<spdlog::logger>(
                               logger_name, begin(sinks), end(sinks));
         combined_logger->set_level(spdlog::level::info);
-        combined_logger->flush_on(spdlog::level::error);
+        combined_logger->flush_on(spdlog::level::err);
 
         spdlog::set_default_logger(combined_logger);
 
