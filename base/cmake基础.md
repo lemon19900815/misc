@@ -65,6 +65,19 @@ set(SRC_LIST main.cpp)
 set(SRC_LIST ${SRC_LIST} test.cpp)
 add_executable(demo ${SRC_LIST})
 
+# set缓存变量的值：set(var value CACHE type[PATH|BOOL|STRING|] docstring)
+set(CMAKE_INSTALL_PREFIX "/path/to/install" CACHE PATH "The install prefix location.")
+
+# 总结：
+# set(var value) 仅在内存中设置变量，不会持久化。
+# set(var value CACHE type docstring) 不仅设置变量值，还将其添加到缓存中，使其成为可配置项，支持持久化存储和交互式修改。
+# 在需要用户自定义或跨构建保留配置信息时，使用带有CACHE的set命令更为合适。
+
+# 特别说明：
+# 在交叉编译工具链cmake文件中指定CMAKE_INSTALL_PREFIX，需要使用CACHE PATH，否则该变量可能不会生效；
+# 这种情况需要在cmake .. -DCMAKE_TOOLCHAIN_FILE=cmake_arm_toolchain.cmake -DCMAKE_INSTALL_PREFIX=/path/to/install
+# 这样设置的变量具有较高的优先级。
+
 # list追加或者删除变量的值
 set(SRC_LIST main.cpp)
 list(APPEND SRC_LIST test.cpp)
