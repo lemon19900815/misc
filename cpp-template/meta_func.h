@@ -18,6 +18,25 @@ struct add
     static constexpr auto value = N + M;
 };
 
+template<typename... Types>
+struct size_count;
+
+template<typename First, typename... Rest>
+struct size_count<First, Rest...>
+{
+    static constexpr auto value =
+        size_count<First>::value + size_count<Rest...>::value;
+};
+
+template<typename First>
+struct size_count<First>
+{
+    static constexpr auto value = sizeof(First);
+};
+
+template<typename... Types>
+constexpr auto size_count_v = size_count<Types...>::value;
+
 template<typename T>
 struct has_member_func_foo
 {
@@ -32,6 +51,7 @@ public:
     static constexpr bool value = decltype(check<T>(nullptr))::value;
 };
 
+// c++14
 template<typename T>
 constexpr bool has_member_func_foo_v = has_member_func_foo<T>::value;
 
@@ -49,11 +69,31 @@ typename std::enable_if_t<std::is_same_v<T, std::string>, int> call_func(T&& t)
     return 1;
 }
 
-// tuple，c++17
+// tuple,c++17
 template<typename... Args, typename F, size_t... Idx>
 void for_each(const std::tuple<Args...>& tp, std::index_sequence<Idx...>, F&& f)
 {
     (std::forward<F>(f)(std::get<Idx>(tp), std::integral_constant<size_t, Idx> {}),...);
+}
+
+// for each tuple on c++11, std::index_sequence for c++14
+// must use self define idx_seq replace std::index_sequence
+// although we can for each tuple on c++11, but that can't generic function (e.g. print)
+template<typename Tuple, size_t... Idx>
+void for_each_c11(Tuple& tp, std::index_sequence<Idx...>)
+{
+    // 方式1：使用swallow
+    using swallow = int[];
+    (void)swallow { 0, (void(print(std::get<Idx>(tp))), 0)... };
+
+    // 方式2：使用std::initializer_list
+    //std::initializer_list<int>{ (print(std::get<Idx>(tp)), 0)... };
+}
+
+template<typename T>
+void print(T v)
+{
+    std::cout << v << std::endl;
 }
 
 // 获取整数序列的最大值
@@ -132,12 +172,13 @@ constexpr auto IndexOf_v = std::conditional_t<Contains_v<T, Args...>,
     IndexOf<T, Args...>, std::integral_constant<int32_t, -1>>::value;
 
 // 编译器查找类型
-template<int Idx, typename... Args>
+template<size_t Idx, typename... Args>
 struct At;
 
-template<int Idx, typename Head, typename... Args>
+template<size_t Idx, typename Head, typename... Args>
 struct At<Idx, Head, Args...>
 {
+    static_assert(Idx <= sizeof...(Args), "At: index is out of range.");
     using type = typename At<Idx - 1, Args...>::type;
 };
 
