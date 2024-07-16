@@ -1,4 +1,4 @@
-# html在markdown中使用的简单整理
+# html usage in md
 
 - 字体颜色设置
   - <font color="red">我是红色</font>
@@ -9,4 +9,5 @@
 
 - 设置文字居中显示
 
-  
+  <h2 align = "center">人工智能技术浅谈</h2>
+
