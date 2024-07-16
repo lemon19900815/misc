@@ -54,7 +54,34 @@
   
 - xargs使用（-i {}）
 
-  - `cmd1 | xargs -i cmd2 {} xxx`
+  ```sh
+  # 基础使用
+  find . -name "*.h" | xargs grep "aaa" -
+  
+  # 使用-i {}转移
+  cmd1 | xargs -i cmd2 {} xxx
+  
+  # 在文件开头新增内容
+  cat license.txt a.h > temp && mv temp a.h
+  echo "what's the fuck" | cat - a.h > temp && mv temp a.h
+  
+  # 查找所有指定后缀的文件添加license.txt
+  find . -name "*.h" -print0 | xargs -0 -I{} bash -c 'cat license.txt {} > {}.tmp && mv {}.tmp {}'
+  
+  # 查找所有文件添加license.txt
+  # 这里-I{}定义了一个替换字符串，sh -c用于执行带有变量的命令。
+  # **注意事项**
+  # - 当使用xargs处理大量数据时，要注意不要超过命令行长度限制。
+  # - 使用-I选项时，确保替换字符串不会与命令中的其他部分冲突。
+  # - 在处理包含特殊字符的文件名时，总是使用-0选项和NUL字符分隔符。
+  find . -type f \( -name "*.cppp" -o -name "*.h" \) -print0 | xargs -0 -I{} bash -c 'cat license.txt {} > {}.tmp && mv {}.tmp {}'
+  ```
+  
+  
+  
+  - ``
+  - 在文件开头新增内容：
+  - 查找所有指定后缀的文件添加文件头：
   
 - 下载yum安装包（yum下载的包保存到本地）
 
