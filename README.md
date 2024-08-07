@@ -1,5 +1,18 @@
 # misc
-学习资料杂乱的整理，详细描述可以参考目录下的`README`文件 
+- [content](#misc)
+  - [algorithm](#algorithm)
+  - [AI](#AI)
+  - [behavior-tree](#behavior-tree)
+  - [dl](#dl)
+  - [common](#common)
+  - [**gof-sample**](#gof-sample)
+  - [lua](#lua)
+  - [net-engine](#net-engine)
+  - [timer](#timer)
+  - [辅助类helper（c++）](#辅助类helper（c++）)
+  - [**base基础知识搜集**](#base基础知识搜集)
+
+学习资料杂乱的整理，详细描述可以参考目录下的`README`文件。
 
 
 ## algorithm
@@ -37,9 +50,6 @@
 
 ## lua
 - `lua`读取`ini`文件封装函数
-
-## mysql
-- 网络收集的一些优化建议
 
 ## net-engine
 - 网络实现相关，参考`redis2.8`

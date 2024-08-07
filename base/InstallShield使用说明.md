@@ -2,7 +2,8 @@
 
 - 基础使用方法
   
-  - [使用方法参考链接](https://blog.csdn.net/plfl520/article/details/4358968?ops_request_misc=&request_id=&biz_id=102&utm_term=InstallShield%E5%88%B6%E4%BD%9C%E5%BC%80%E6%9C%BA%E5%90%AF%E5%8A%A8%E8%BD%AF%E4%BB%B6%E5%8C%85&utm_medium=distribute.pc_search_result.none-task-blog-2~all~sobaiduweb~default-6-4358968.142^v73^insert_down3,201^v4^add_ask,239^v2^insert_chatgpt&spm=1018.2226.3001.4187)
+  - https://blog.csdn.net/plfl520/article/details/4358968
+  - https://blog.csdn.net/dy_paradise/article/details/8254200
   
 - 常见问题
   - IS在使用过程中经常卡死情况：[参考该链接进行修改](https://blog.csdn.net/weixin_43976890/article/details/108580457)
