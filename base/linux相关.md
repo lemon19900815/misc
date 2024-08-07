@@ -172,3 +172,32 @@
 
   - windows可以直接修改选项`C_Cpp.intelliSenseCacheSize`来达到目的
 
+- linux下开机自启动：
+
+  将开机需要运行的命令写入到/etc/rc.local文件;
+
+  如果软件读取相对目录，则在软件进入main时，需要切换当前软件工作目录
+
+  执行类似linux的切换目录方式：`cur_path=$(cd "$(dirname $0)";pwd)`
+
+  ```sh
+  #!/bin/sh
+  
+  proj="ProjectName"
+  rc_file="/etc/rc.local"
+  var=$(grep $proj $rc_file)
+  
+  # ensure the rc.local can be execute.
+  chmod +x /etc/rc.local
+  
+  if [ -z "$var" ]; then
+      echo "setup $proj on boot."
+      echo "nohup $(pwd)/$proj &" >> $rc_file
+  else
+      echo "already setup."
+  fi
+  ```
+
+  
+
+- 
