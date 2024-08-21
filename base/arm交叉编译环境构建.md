@@ -60,6 +60,11 @@
    # 通过安装qemu用户空间模拟方式，可以让程序得到运行
    sudo apt-get install qemu-user
    
+   # 下载最新的qemu，apt仓库的比较旧,最好下载静态的qemu
+   # http://archive.ubuntu.com/ubuntu/pool/universe/q/qemu/
+   wget http://archive.ubuntu.com/ubuntu/pool/universe/q/qemu/qemu-user-static_2.11+dfsg-1ubuntu7.42_i386.deb
+   dpkg -i qemu-user_2.11+dfsg-1ubuntu7.42_i386.deb
+   
    # 使用交叉编译工具链编译测试程序，然后使用qemu-arm进行验证
    
    # 目标机器运行时，通常会出现以下错误：
