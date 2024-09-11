@@ -203,4 +203,31 @@
 - 获取进程pid号：
 
   - 使用命令`pgrep -f process_name`的方式获取进程id时，如果该进程的目录信息包含process_name则可能导致不能正确获取进程pid；
+
   - 使用`pidof process_name`的方式获取进程id，可以正确捕获进程pid号；
+
+  - 通过获取进程是否启动，没有启动则启动它，模拟守护进程功能；
+
+    ```sh
+    process=test
+    
+    # deamon: if process crashdump, restart it.
+    while true
+    do
+        sleep 3
+        #pid=$(pgrep -f "$process")
+        pid=$(pidof $process)
+        if [ -n "$pid" ]; then
+            :
+            #echo "find process $process: $pid"
+        else
+            echo "start $process..."
+            echo "`date +%Y%m%d-%H%M%S`: start $process..." >> $logfile
+            nohup ./$process >/dev/null 2>&1 &
+        fi
+    done
+    ```
+
+    
+
+  - 
