@@ -200,4 +200,7 @@
 
   
 
-- 
+- 获取进程pid号：
+
+  - 使用命令`pgrep -f process_name`的方式获取进程id时，如果该进程的目录信息包含process_name则可能导致不能正确获取进程pid；
+  - 使用`pidof process_name`的方式获取进程id，可以正确捕获进程pid号；
