@@ -258,3 +258,15 @@ ssl_enable=NO
 local_root=/srv/ftp
 ```
 
+### 2.7 错误解决
+
+- 错误1：`500 OOPS: vsftpd: refusing to run with writable root inside chroot()`
+
+  ```ini
+  修改/etc/vsftp.conf添加如下行
+  allow_writable_chroot=YES
+  ```
+
+  
+
+- 
