@@ -1,3 +1,13 @@
+- **目录**
+  - [1. 前置说明](#1. 前置说明)
+  - [2. 编译工具](#2. 编译工具)
+  - [3. 交叉编译第三方库](#3. 交叉编译第三方库)
+  - [4. 编译arm版本](#4. 编译arm版本)
+  - [5. 编译x64版本](#5. 编译x64版本)
+  - [6. 其他注意事项](#6. 其他注意事项)
+
+
+
 # ARM交叉编译环境构建
 
 参考链接：
@@ -111,14 +121,14 @@
    For help, type "help".
    Type "apropos word" to search for commands related to "word"...
    Reading symbols from ./a.out...done.
-   (gdb) target remote localhost:1234 <----------------------输入
+   (gdb) target remote localhost:1234 <---------------------------------------------------------------------输入
    Remote debugging using localhost:1234
    warning: remote target does not support file transfer, attempting to access files from local filesystem.
    warning: Unable to find dynamic linker breakpoint function.
    GDB will be unable to debug shared library initializers
    and track explicitly loaded dynamic code.
    0x40801a40 in ?? ()
-   (gdb) c <----------------------输入
+   (gdb) c <------------------------------------------------------------------------------------------------输入
    Continuing.
    warning: Could not load shared library symbols for 9 libraries, e.g. /lib/libpthread.so.0.
    Use the "info sharedlibrary" command to see the complete listing.
@@ -130,7 +140,41 @@
    Continuing.
    ```
 
+8. 软件打包
 
+   在Linux平台下，使用动态库方式发布的程序，通常会存在连接库位置问题，所以在发布机上一般会选中以下方式处理：
+
+   - 添加`/etc/ld.conf.d`我们发布程序依赖库的目录；
+   - `EXPORT LD_LIBRARY_PATH=/path/to/your/lib && ./program`；
+   - 使发布程序的依赖库路径和编译环境一致；
+
+   以上3种方式都存在诸多限制，结合之前的经验，参考[linuxdeployqt](https://github.com/probonopd/linuxdeployqt)工具的工作方式（ldd查找依赖并修改rpath），编写打包脚本，实现类似功能。
+
+   ```sh
+   # 读取软件的rpath目录
+   rpath=`readelf -d $you_program | grep -i path | cut -d'[' -f2 | cut -d']' -f1`
+   echo "rpath: $rpath"
+   
+   new_rpath="./"
+   
+   # 读取依赖库
+   libs=`readelf -d $you_program | grep -i needed | cut -d'[' -f2 | cut -d']' -f1 | xargs echo`
+   
+   # 忽略系统库：不在rpath目录下的库认为是系统库
+   # 拷贝所有依赖库，并修改rpath
+   echo "copy all dependency."
+   for lib in $libs; do
+       if [ -e "$rpath/$lib" ]; then
+       	echo "    $lib"
+           cp $rpath/$lib . && chrpath -r $new_rpath $lib 1>/dev/null
+       fi
+   done
+   
+   # 最后修改软件的rpath
+   chrpath -r $new_rpath $you_program
+   ```
+
+   
 
 其他相关知识：
 
@@ -184,7 +228,7 @@
 
    
 
-2. 安装[cmake3.29](https://objects.githubusercontent.com/github-production-release-asset-2e65be/537699/adff2bbc-e2da-4b7f-8179-a30759f92d20?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=releaseassetproduction%2F20240529%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20240529T095832Z&X-Amz-Expires=300&X-Amz-Signature=014380e871b8cc3ab61a26dbb0ac6b65923d536bcdc09a6149735dbc9ea264c7&X-Amz-SignedHeaders=host&actor_id=7922557&key_id=0&repo_id=537699&response-content-disposition=attachment%3B%20filename%3Dcmake-3.29.3.tar.gz&response-content-type=application%2Foctet-stream)
+2. 安装cmake3.29
 
    ```sh
    # 1. 下载cmake源码包
@@ -656,7 +700,7 @@ cmake .. -DOPENSSL_ROOT_DIR=$third_party_local -DBOOST_ROOT=/path/to/your/direct
 
    
 
-3. qemu-arm运行时报出段错误
+3. qemu-arm运行时报出段错误：使用最新版的qemu-user-static已经解决了该问题；
 
    ```
    /build/qemu-sKi_Nc/qemu-2.0.0+dfsg/tcg/tcg.c:1693: tcg fatal error

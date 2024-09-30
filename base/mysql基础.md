@@ -21,6 +21,132 @@ ref: [参考](https://blog.csdn.net/mysnsds/article/details/125313346)
 
 
 
+### 1.2 mysql游标
+
+**注意：**
+
+1. 变量的声明必须在游标声明之前；
+2. 处理程序的声明必须在游标声明之后；
+
+
+
+- 不能定义多个*相同*处理程序；
+
+  ```mysql
+  DECLARE done1 INT DEFAULT FALSE;
+  DECLARE done2 INT DEFAULT FALSE;
+  
+  -- 声明第一个游标
+  DECLARE cursor1 CURSOR FOR SELECT column_name FROM table1;
+  
+  -- 声明第二个游标
+  DECLARE cursor2 CURSOR FOR SELECT column_name FROM table2;
+  
+  -- 声明处理程序(**这样多个处理程序的处理方式是不正确的**)
+  DECLARE CONTINUE HANDLER FOR NOT FOUND SET done1 = TRUE;
+  DECLARE CONTINUE HANDLER FOR NOT FOUND SET done2 = TRUE;
+  
+  -- 声明统一处理程序
+  DECLARE CONTINUE HANDLER FOR NOT FOUND 
+  BEGIN
+      IF current_cursor = 1 THEN
+          SET done1 = TRUE; 
+      ELSE
+          SET done2 = TRUE; 
+      END IF;
+  END;
+  ```
+
+  
+
+- 定义不同的处理程序；
+
+  ```mysql
+  DECLARE done1 INT DEFAULT FALSE;
+  DECLARE done2 INT DEFAULT FALSE;
+  
+  -- 声明第一个游标
+  DECLARE cursor1 CURSOR FOR SELECT column_name FROM table1;
+  
+  -- 声明第二个游标
+  DECLARE cursor2 CURSOR FOR SELECT column_name FROM table2;
+  
+  -- 第一个处理程序
+  DECLARE CONTINUE HANDLER FOR NOT FOUND SET done1 = TRUE;
+  
+  -- 第二个处理程序：处理某个特定错误代码（例如：1062，重复键错误）
+  DECLARE CONTINUE HANDLER FOR SQLEXCEPTION 
+  BEGIN
+      SET done2 = 1;  -- 处理错误
+  END;
+  ```
+
+  
+
+- 在一个存储过程中使用多个游标的完整示例；
+
+  ```mysql
+  DELIMITER ;;
+  
+  CREATE PROCEDURE example_procedure()
+  BEGIN
+      DECLARE done1 INT DEFAULT FALSE;
+      DECLARE done2 INT DEFAULT FALSE;
+      DECLARE current_cursor INT DEFAULT 1; -- 用于跟踪当前游标
+  
+      -- 声明第一个游标
+      DECLARE cursor1 CURSOR FOR SELECT column_name FROM table1;
+      
+      -- 声明第二个游标
+      DECLARE cursor2 CURSOR FOR SELECT column_name FROM table2;
+  
+      -- 声明统一处理程序
+      DECLARE CONTINUE HANDLER FOR NOT FOUND 
+      BEGIN
+          IF current_cursor = 1 THEN
+              SET done1 = TRUE; 
+          ELSE
+              SET done2 = TRUE; 
+          END IF;
+      END;
+  
+      OPEN cursor1;
+  
+      -- 游标循环
+      fetch_loop1: LOOP
+          FETCH cursor1 INTO ...; -- 替换为实际的列名（可以是多个数据列）
+          IF done1 THEN
+              LEAVE fetch_loop1;
+          END IF;
+  
+          -- 处理数据逻辑
+      END LOOP fetch_loop1;
+  
+      CLOSE cursor1;
+  
+      -- 切换到第二个游标
+      SET current_cursor = 2;
+  
+      OPEN cursor2;
+  
+      -- 游标循环
+      fetch_loop2: LOOP
+          FETCH cursor2 INTO ...; -- 替换为实际的列名（可以是多个数据列）
+          IF done2 THEN
+              LEAVE fetch_loop2;
+          END IF;
+  
+          -- 处理数据逻辑
+      END LOOP fetch_loop2;
+  
+      CLOSE cursor2;
+  END ;;
+  
+  DELIMITER ;
+  ```
+
+
+
 
 
 ## 2. mysql优化建议（技巧）
