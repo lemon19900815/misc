@@ -1,4 +1,8 @@
-## Linux命令(centos)
+[TOC]
+
+# Linux相关
+
+## 1. Linux命令
 
 - 查看系统信息
 
@@ -70,19 +74,14 @@
   
   # 查找所有文件添加license.txt
   # 这里-I{}定义了一个替换字符串，sh -c用于执行带有变量的命令。
+  # 在文件开头新增内容，查找所有指定后缀的文件添加文件头
   # **注意事项**
-  # - 当使用xargs处理大量数据时，要注意不要超过命令行长度限制。
-  # - 使用-I选项时，确保替换字符串不会与命令中的其他部分冲突。
-  # - 在处理包含特殊字符的文件名时，总是使用-0选项和NUL字符分隔符。
+  # 1. 当使用xargs处理大量数据时，要注意不要超过命令行长度限制。
+  # 2. 使用-I选项时，确保替换字符串不会与命令中的其他部分冲突。
+  # 3. 在处理包含特殊字符的文件名时，总是使用-0选项和NUL字符分隔符。
   find . -type f \( -name "*.cppp" -o -name "*.h" \) -print0 | xargs -0 -I{} bash -c 'cat license.txt {} > {}.tmp && mv {}.tmp {}'
   ```
-  
-  
-  
-  - ``
-  - 在文件开头新增内容：
-  - 查找所有指定后缀的文件添加文件头：
-  
+
 - 下载yum安装包（yum下载的包保存到本地）
 
   ```ini
@@ -121,9 +120,25 @@
 
   [top命令解释参考]: https://blog.csdn.net/xujiamin0022016/article/details/89072116
 
-  
+- dpkg命令
 
-## 动态库
+  - 使用该命令安装离线包时，可能出现中途失败的情况，这时dpkg不会自动回滚，重新安装可能仍然会失败；
+
+  - 这时需要删除之前失败的库的信息，才能使用dpkg正常卸载；`ll /var/lib/dpkg/info/your_lib_name`；
+
+  - 注意：dpkg卸载时，需要先卸载依赖；
+
+    ```sh
+    # librealsense2-udev-rules requires librealsense2 to be removed first
+    sudo apt-get purge <package-name>
+    
+    # 卸载realsense相关的所有包
+    dpkg -l | grep "realsense" | cut -d " " -f 3 | xargs sudo dpkg --purge
+    ```
+
+
+
+## 2. 动态库
 
 - 动态库的版本号命名规则
 
@@ -155,7 +170,7 @@
 
   `zip -ry lib.zip lib`
 
-## 其他
+## 3. 其他
 
 - vscode选项建议
 

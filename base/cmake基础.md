@@ -309,6 +309,19 @@ set (CPACK_PACKAGE_VERSION_PATCH "1")
 include (CPack)
 ```
 
+### 1.18 c++编译选项
+
+```cmake
+# 设置c++标准
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+# 设置c++标准
+add_compile_options(-std=c++11)
+
+# 设置类似于生成pdb符号的编译选项
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g")
+```
+
 ## 2. cmakelists.txt示例
 
 ```cmake

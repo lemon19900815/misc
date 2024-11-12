@@ -97,6 +97,7 @@ $ git log --abbrev-commit
 
 # 一行子日志简短的hash
 $ git log --pretty=oneline --abbrev-commit
+$ git log --oneline
 ```
 
 ## 5. git remote
