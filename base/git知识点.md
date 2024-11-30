@@ -75,16 +75,57 @@ $ git pull
 
 ## 3. git rebase
 
-```shell
-# 参考：https://blog.csdn.net/qq_39253370/article/details/124277214?d=1676020974837
+reference： [参考连接](https://blog.csdn.net/qq_39253370/article/details/124277214?d=1676020974837)
 
-# git变基操作（合并多个commit）
+git变基操作（合并多个commit），也可以指定合并某个版本之前的版本：git rebase -i 3a4226b 但不包含 3a4226b，至合并他之前的。执行了 rebase 之后会弹出一个窗口，让你选择合并哪些 commit 记录。
+
+```sh
 $ git rebase -i HEAD~4
-
-# **重要**：变基之后不能直接使用git pull操作，要使用git pull --rebase，否则变基之前的多个commit将再次出现
-# 变基的第一条记录需要使用pick，其他的使用s
-$ git pull --rebase
 ```
+
+需要把 pick 改为 s 或 squash，需要留第一个，第一个不要改，意思是下面的 commit 记录都合并到第一个上面去。
+
+```sh
+pick 3ca6ec3   '注释**********'   => pick 3ca6ec3   '注释**********'
+pick 1b40566   '注释*********'    => s 1b40566      '注释*********'
+pick 53f244a   '注释**********'   => s 1b40566      '注释*********'
+```
+
+如果有冲突，可以先解决冲突，解决完之后执行：
+
+```sh
+$ git add .
+$ git rebase --continue
+```
+
+如果不想执行或者想放弃的话可以执行：
+
+```sh
+$ git rebase --abort
+```
+
+如果没有冲突，或者冲突已经解决，会弹出窗口，让你注释掉一些提交记录，这里是让我们编辑自己合并的这些记录的概览，如：完成了什么功能，按照实际情况填写。
+
+```sh
+ This is a combination of 4 commits.  
+# 写上合并的这些 commit 做了什么事，如：
+完成了 api 的编写：
+	1. 完成了用户相关的 api 编写
+	2. 完成了用户列表相关 api 编写
+
+# 下面的都注释
+# The first commit’s message is:  
+# 注释......
+# The 2nd commit’s message is:  
+# 注释......
+# The 3rd commit’s message is:  
+# 注释......
+# Please enter the commit message for your changes. Lines starting # with ‘#’ will be ignored, and an empty message aborts the commit.
+```
+
+**重要**：变基之后不能直接使用git pull操作，要使用git pull --rebase，否则变基之前的多个commit将再次出现。
+
+合并之后由于 commit 记录发生了变基，需要使用 -f 关键字提交，由于我们都是在自己分支开发，不会覆盖其他人提交的记录，如果在主分支请谨慎使用 -f 提交，因为会覆盖别人的代码。
 
 ## 4. git log
 
