@@ -267,7 +267,7 @@ install (FILES MathFunctions.h DESTINATION include)
 set(CMAKE_INSTALL_PREFIX ${PROJECT_BINARY_DIR}/install)
 
 # 注：默认install之后会去掉`runpath`属性；可以使用以下方式设置动态库的rpath；详情请参考[linux动态库链接说明](./linux动态库链接说明.md)
-set_target_properties(${PROJECT_NAME} PROPERTIES INSTALL_RPATH "./")
+set_target_properties(${PROJECT_NAME} PROPERTIES INSTALL_RPATH "$ORIGIN/lib")
 ```
 
 ### 1.16 add_custom_target
