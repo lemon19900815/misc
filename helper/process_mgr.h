@@ -69,24 +69,20 @@ int process::start(const std::string& path_name, const std::string& args)
     start_info.dwFlags = STARTF_USESHOWWINDOW;
     start_info.wShowWindow = SW_SHOW;
 
-    //CreateProcess(_Convert_Source_to_wide(process_with_param).c_str(),
-    //    const_cast<wchar_t*>(L""), NULL, NULL, FALSE, NORMAL_PRIORITY_CLASS,
+    // 转换为宽字符
+    //auto arg_param = fs::path(" "s + args).native();
+
+    //CreateProcess(
+    //    pname.native().c_str(), &arg_param[0],
+    //    NULL, NULL, FALSE, NORMAL_PRIORITY_CLASS,
     //    NULL, NULL, &start_info, &process_info);
 
-    // 转换为宽字符
-    auto ws_param = fs::path(" "s + args).native();
+    auto arg_param = pname.native() + fs::path(" "s + args).native();
 
     CreateProcess(
-        pname.native().c_str(), ws_param.data(),
-        NULL, NULL, FALSE, NORMAL_PRIORITY_CLASS,
+        NULL, &arg_param[0],
+        NULL, NULL, FALSE, CREATE_NEW_CONSOLE,
         NULL, NULL, &start_info, &process_info);
-
-    //handle_ = process_info.hProcess;
-    //process_ = p.filename().native();
-
-    //LOG(INFO) << "2cur path = " << std::filesystem::current_path();
-
-    //WinExec(process_with_param.c_str(), 0);
 
     return process_info.dwProcessId;
 }
