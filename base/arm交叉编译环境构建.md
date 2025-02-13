@@ -251,13 +251,15 @@
 
    
 
-3. 设置cmake交叉编译工具链：toolchains-arm.cmake
+3. 设置cmake交叉编译工具链：`arm.cmake`
 
    ```cmake
    SET(CMAKE_SYSTEM_NAME Linux)
+   # arm | aarch64
    SET(CMAKE_SYSTEM_PROCESSOR arm)
    
    # 指定到libc目录
+   # aarch64和arm版本的不一致，可使用`aarch64-linux-gnu-gcc|arm-linux-gnueabihf-gcc -print-sysroot`查看
    set(CMAKE_SYSROOT /path/to/your/directory/arm-toolchains/gcc-linaro-5.5.0-2017.10-i686_arm-linux-gnueabihf/arm-linux-gnueabihf/libc)
    SET(tools /path/to/your/directory/arm-toolchains/gcc-linaro-5.5.0-2017.10-i686_arm-linux-gnueabihf/bin)
    SET(CMAKE_C_COMPILER ${tools}/arm-linux-gnueabihf-gcc)
@@ -287,7 +289,7 @@
    # 2.解压软件包
    tar -zxvf openssl1.1.1t.tar.gz & cd openssl1.1.1t
    
-   # 3.使用config生成makefile文件
+   # 3.使用config生成makefile文件：arm-linux-gnueabihf- | aarch64-linux-gnu-
    ./config no-asm shared no-async --prefix=$(pwd)/install --cross-compile-prefix=arm-linux-gnueabihf-
    
    # 4.移除makefile文件中的-m32
@@ -432,6 +434,7 @@
    * missing argument n2
    
    # 2. 修改abi：<abi>aapcs => <abi>sysv
+   # 或者编译时指定abi=sysv **建议**
    alias asm_sources
    : asm/make_arm_aapcs_elf_gas.S
    asm/jump_arm_aapcs_elf_gas.S
@@ -458,17 +461,18 @@
    if ! gcc in [ feature.values <toolset> ]
    {
        using gcc ;
-       using gcc : arm : arm-linux-gnueabihf-g++ : <cxxflags>-std=c++11 ; # 新增，指定c++11编译，注意尾部的空格
+       using gcc : arm : arm-linux-gnueabihf-g++ : <cxxflags>-std=c++11 ; # arm新增，指定c++11编译，注意尾部的空格
+       using gcc : aarch64 : aarch64-linux-gnu-g++ : <cxxflags>-std=c++11 ; # aarch64
    }
    
    # 交叉编译boost，link=[static|shared]
-   ./b2 install --prefix=./install --build-dir=./build link=shared variant=debug variant=release address-model=32 toolset=gcc-arm
+   ./b2 install --prefix=./install --build-dir=./build link=shared variant=debug variant=release address-model=32 toolset=gcc-arm abi=sysv
    
    # 编译本地环境
    ./b2 install --prefix=./install/local --build-dir=./build/local link=static runtime-link=static address-model=32 toolset=gcc
    
    # 编译交叉编译版本：**请安装到--prefix=$third_party**
-   ./b2 install --prefix=./install/arm --build-dir=./build/arm link=static runtime-link=static address-model=32 toolset=gcc-arm
+   ./b2 install --prefix=./install/arm --build-dir=./build/arm link=static runtime-link=static address-model=32 toolset=gcc-arm abi=sysv
    
    # install vs stage
    # install会安装include，而stage不会，stage只会将编译库放在指定的路径下
@@ -531,9 +535,9 @@
 
 9. 
 
-## 4. 编译arm版本
+## 4. 编译arm|aarch64版本
 
-- 使用build.sh脚本编译工程arm版本：`sh build.sh [debug|release]`；
+- 使用build.sh脚本编译工程arm版本：`sh build.sh [debug|release] [arm|aarch64]`；
 
   ```sh
   #!/bin/bash
@@ -552,18 +556,31 @@
       build_type="Release"
       ;;
     *)
-      echo "Usage: $0 {debug|release}"
+      echo "Usage: $0 {debug|release} {arm|aarch64}"
+      exit
+      ;;
+  esac
+  
+  case $2 in
+    arm)
+      triplet=arm-linux
+      ;;
+    aarch64)
+      triplet=aarch64-linux
+      ;;
+    *)
+      echo "Usage: $0 {debug|release} {arm|aarch64}"
       exit
       ;;
   esac
   
   echo "build project with $build_type mode."
   
-  if [ ! -e "target/arm32-linux" ]; then
-      cd target && tar -zxvf arm32-linux.tar.gz && cd ..
+  if [ ! -e "target/$triplet" ]; then
+      cd target && tar -zxvf $triplet.tar.gz && cd ..
   fi
   
-  export third_party=$(pwd)/target/arm32-linux
+  export third_party=$(pwd)/target/$triplet
   echo "third_party: $third_party"
   
   # remove build dir.
@@ -571,8 +588,8 @@
   
   mkdir build && cd build
   
-  # build the target.
-  cmake .. -DCMAKE_TOOLCHAIN_FILE=../cmake/arm_toolchain.cmake -DCMAKE_BUILD_TYPE=$build_type
+  # build the target,建议交叉编译工具链设置为aarch64.cmake,arm.cmake
+  cmake .. -DCMAKE_TOOLCHAIN_FILE=../cmake/$2.cmake -DCMAKE_BUILD_TYPE=$build_type
   make -j4
   
   unset third_party
