@@ -1,10 +1,11 @@
 - **目录**
-  - [1. 前置说明](#1. 前置说明)
-  - [2. 编译工具](#2. 编译工具)
-  - [3. 交叉编译第三方库](#3. 交叉编译第三方库)
-  - [4. 编译arm版本](#4. 编译arm版本)
-  - [5. 编译x64版本](#5. 编译x64版本)
-  - [6. 其他注意事项](#6. 其他注意事项)
+  -  [1.  像原生应用一样运行交叉编译的应用](#1. 像原生应用一样运行交叉编译的应用)
+  - [2. 前置说明](#2. 前置说明)
+  - [3. 编译工具](#3. 编译工具)
+  - [4. 交叉编译第三方库](#4. 交叉编译第三方库)
+  - [5. 编译arm版本](#5. 编译arm版本)
+  - [6. 编译x64版本](#6. 编译x64版本)
+  - [7. 其他注意事项](#7. 其他注意事项)
 
 
 
@@ -16,7 +17,100 @@
 
 
 
-## 1. 前置说明
+## 1. 像原生应用一样运行交叉编译的应用
+
+**Note：**本章节内容主要通过[deepseek](https://chat.deepseek.com/)获得，思维链的过程也很值得学习。
+
+输入类似这样的问题：在x64架构的ubuntu虚拟机上交叉编译aarch64程序，编译完之后就能直接运行，不知道它这个虚拟机是怎么处理的，之前我交叉编译都是通过qemu-user来运行的，但它这个编译完之后就可以执行运行。请你分析一下这个虚拟机是如何做到的！！！
+
+
+
+如何验证交叉编译后的程序是很重要的，下文我们提到了使用`qemu-user`模块对交叉编译的程序进行运行验证，但我们通常会存在割裂感，不像原生应用那样，可以直接运行验证。在后续的交叉编译学习过程中，我发现可以通过`qemu-user`和`binfmt_misc`可以实现以“原生”应用那样的方式运行。以下内容是对这种使用的总结：虚拟机安装了`qemu-user`和`binfmt_misc`，使得不同架构的程序能够透明运行。用户可能没有意识到这一配置，误以为直接运行，而实际上是qemu在背后工作。
+
+### 1.1. **核心机制：`binfmt_misc` + QEMU 用户模式**
+
+- **`binfmt_misc`** 是 Linux 内核的一个功能，允许系统根据可执行文件的**魔数（Magic Number）\**或\**文件扩展名**自动选择对应的解释器。
+- **QEMU 用户模式（qemu-user）** 可以动态翻译不同架构的指令，允许在 x64 主机上直接运行 aarch64 程序（无需完整虚拟机）。
+
+**当这两个组件结合时**：
+
+- 系统会识别 aarch64 可执行文件的格式。
+- 自动调用 `qemu-aarch64` 作为解释器运行该程序，整个过程对用户透明。
+
+------
+
+### 1.2. **验证虚拟机中的配置**
+
+通过以下命令检查是否启用了 `binfmt_misc` 的 QEMU 支持：
+
+```bash
+ls /proc/sys/fs/binfmt_misc/
+```
+
+如果存在名为 `qemu-aarch64` 的注册项，说明已配置自动调用 QEMU。
+
+**查看注册项详细信息**：
+
+```bash
+cat /proc/sys/fs/binfmt_misc/qemu-aarch64
+```
+
+输出示例：
+
+```bash
+enabled
+interpreter /usr/libexec/qemu-binfmt/aarch64-binfmt-P
+magic 7f454c460201010000000000000000000200b7
+mask ffffffffffffff00fffffffffffffffffeffffff
+```
+
+------
+
+### 1.3. **关键组件安装**
+
+实现此功能通常需要安装以下软件包：
+
+```bash
+sudo apt install qemu-user qemu-user-static binfmt-support
+```
+
+- **`qemu-user`**: 提供用户模式模拟器（如 `qemu-aarch64`）。
+- **`binfmt-support`**: 管理 `binfmt_misc` 的配置，自动注册不同架构的解释器。
+
+------
+
+### 1.4. **动态链接与静态链接的影响**
+
+- **动态链接程序**：需要目标架构（如 aarch64）的动态库。可以通过安装多架构库支持：
+
+  ```bash
+  sudo dpkg --add-architecture arm64
+  sudo apt update
+  sudo apt install libc6:arm64
+  ```
+
+  这样，QEMU 会自动从 `/usr/lib/aarch64-linux-gnu/` 加载所需库。
+
+- **静态链接程序**：无需额外库，直接由 QEMU 解释执行。
+
+------
+
+### 1.5. **用户感知 vs 实际执行**
+
+虽然用户以为程序是“直接运行”，但实际上流程如下：
+
+```bash
+1. 用户执行 ./aarch64-program
+2. 内核通过 binfmt_misc 检测到这是 aarch64 ELF 文件。
+3. 内核调用已注册的解释器 /usr/bin/qemu-aarch64。
+4. QEMU 加载并动态翻译执行该程序。
+```
+
+整个过程无需用户显式输入 `qemu-aarch64 ./program`，因此看起来像是“原生运行”。
+
+
+
+## 2. 前置说明
 
 以ubuntu14.04 32位系统为例，安装gcc7.5版本用于支持c++17；
 
@@ -199,7 +293,7 @@
 
 
 
-## 2. 编译工具
+## 3. 编译工具
 
 1. 安装[gcc-7.5](https://mirrorservice.org/sites/sourceware.org/pub/gcc/releases/gcc-7.5.0/gcc-7.5.0.tar.xz)； [参考链接](https://blog.csdn.net/weixin_42608165/article/details/93740862)
 
@@ -278,7 +372,7 @@
 
 
 
-## 3. 交叉编译第三方库
+## 4. 交叉编译第三方库
 
 1. 编译openssl1.1.1t
 
@@ -535,7 +629,7 @@
 
 9. 
 
-## 4. 编译arm|aarch64版本
+## 5. 编译arm|aarch64版本
 
 - 使用build.sh脚本编译工程arm版本：`sh build.sh [debug|release] [arm|aarch64]`；
 
@@ -684,7 +778,7 @@
   
 
 
-## 5. 编译x64版本
+## 6. 编译x64版本
 
 ```sh
 sudo ln -sf /usr/local/lib/libstdc++.so.6.0.24 /usr/lib/i386-linux-gnu/libstdc++.so.6
@@ -706,7 +800,7 @@ cmake .. -DOPENSSL_ROOT_DIR=$third_party_local -DBOOST_ROOT=/path/to/your/direct
 
 
 
-## 6. 其他注意事项
+## 7. 其他注意事项
 
 1. 注意使用2.0版本的qemu-user模拟arm程序运行时，会出现：`Unsupported setsockopt level=1 optname=13`从而导致模拟软件运行失败（13 表示level=1表示SOL_SOCKET ，optname=13表示SO_LINGER选项）；
 
