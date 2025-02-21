@@ -51,6 +51,57 @@ public:
     static constexpr bool value = decltype(check<T>(nullptr))::value;
 };
 
+template<typename T, typename = std::void_t<>>
+struct has_mem_func : std::false_type { };
+
+// partial specialization (may be SFINAE’ d away):
+template<typename T>
+struct has_mem_func<T, std::void_t<decltype(std::declval<T>().foo())>> : std::true_type { };
+
+template<typename T>
+struct IsDefaultConstructibleT {
+private:
+    template<typename U, typename = decltype(U())>
+    static char test(void*);
+    template<typename>
+    static long test(...); // test() fallback:
+public:
+    static constexpr bool value = std::is_same<decltype(test<T>(nullptr)), char>::value;
+};
+
+template<typename T>
+struct IsDefaultConstructibleTV2 {
+private:
+    template<typename U, typename = decltype(U())>
+    static std::true_type test(void*);
+    template<typename>
+    static std::false_type test(...); // test() fallback:
+public:
+    static constexpr bool value = decltype(test<T>(nullptr))::value;
+};
+
+template<typename T>
+struct IsDefaultConstructibleTHelper {
+private:
+    template<typename U, typename = decltype(U())>
+    static std::true_type test(void*);
+    template<typename>
+    static std::false_type test(...); // test() fallback:
+public:
+    using Type = decltype(test<T>(nullptr));
+};
+
+template<typename T>
+struct IsDefaultConstructibleTV3 : public IsDefaultConstructibleTHelper<T>::Type {};
+
+// 判断是否存在不抛出异常的右值构造函数
+template<typename T, typename = std::void_t<>>
+struct IsNothrowMoveContructibleT : std::false_type {};
+
+template<typename T>
+struct IsNothrowMoveContructibleT<T, std::void_t<decltype(T(std::declval<T>()))>>
+    : std::bool_constant<noexcept(T(std::declval<T>()))> {};
+
 // c++14
 template<typename T>
 constexpr bool has_member_func_foo_v = has_member_func_foo<T>::value;
@@ -190,7 +241,6 @@ struct At<0, Head, Args...>
 
 template<size_t Idx, typename... Args>
 using At_t = typename At<Idx, Args...>::type;
-
 
 template<typename T>
 void print_type(std::string prefix="")
