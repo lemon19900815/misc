@@ -1,4 +1,7 @@
 # mysql总结
+
+![sql执行流程](./img/sql执行流程.png)
+
 ## 1. mysql基础
 
 ref: [参考](https://blog.csdn.net/mysnsds/article/details/125313346)
