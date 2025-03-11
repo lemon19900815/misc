@@ -282,6 +282,34 @@ bool loadCSV(const cv::String& filename, int headerLines,
   return true;
 }
 
+#include "file_util.h"
+void test_img()
+{
+  std::string content;
+  file_util::read_bin("../images/a.png", content);
+
+  auto cat = cv::imread("../images/cat.jpg");
+  auto cat_type = cat.type();
+
+  auto raw_ptr = (uint8_t*)content.c_str();
+
+  std::vector<uint8_t> data;
+  data.assign(raw_ptr, raw_ptr + content.size());
+
+  cv::Mat img = cv::imdecode(data, cv::IMREAD_COLOR);
+  if (!img.empty())
+  {
+    cv::imshow("cat", img);
+  }
+
+  //auto width = 707; // col
+  //auto height = 863; // row
+  //cv::Mat mat(height, width, CV_8UC(3), content.data());
+  //cv::imshow("cat", cat);
+
+  cv::waitKey();
+}
+
 int main() {
 
   //auto varTypeSpec = static_cast<std::string>("cat[0-22]");
@@ -297,7 +325,7 @@ int main() {
   //testbase::Run();
   //testkmeans::Run();
   //testknn::Run();
-  testdtree::Run();
+  //testdtree::Run();
 
   //int32_t int_min = 0x80000000;
   //int32_t int_max = 0x7FFFFFFF;
@@ -305,6 +333,7 @@ int main() {
 
   //cv::waitKey();
 
-  system("pause");
+  test_img();
+  //system("pause");
   return 0;
 }
