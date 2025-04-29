@@ -55,6 +55,7 @@ public:
         spdlog::set_default_logger(combined_logger);
 
         // log pattern: enable function name.
+        // reference to: pattern_formatter-inl.h:pattern_formatter::handle_flag_
         spdlog::set_pattern("[%Y-%m-%d %H:%M:%S.%e] [%n] [%^%l%$] [%s:%# %!] %v");
 
         // Flush all *registered* loggers using a worker thread every 3 seconds.
