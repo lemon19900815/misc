@@ -4,7 +4,8 @@
   - [2. 利用WER生成dump文件](#2. 利用WER生成dump文件)
   - [3. 使用gflags全局定位问题](#3. 使用gflags全局定位问题)
   - [4.总结](#4.总结)
-
+  - [5.扩展](#5.扩展)
+  
   
 
 # windows程序异常堆栈跟踪
@@ -160,3 +161,11 @@ int main(int argc, char** argv)
 - 对于一般的程序异常，我们采用第1种方式即可；
 - 如果程序崩溃但是未能按照预期产生dump文件，则配合第2种机制；
 - 如果上述办法仍然不能捕获dump，再使用第3种方式；
+
+
+
+## 5.扩展
+
+- 异常的路径追踪：https://blog.csdn.net/yongweiwu/article/details/145483717
+- backward-cpp：https://github.com/bombela/backward-cpp
+
