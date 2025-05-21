@@ -17,13 +17,15 @@ mqtt服务器broker使用的一些注意事项。
 
   
 
-- 服务的状态可以使用`mqtt.fx`工具订阅，发布消息等和查询broker的状态；
+- 服务的状态可以使用[`mqtt.fx-1.7.1`](https://cloud.tencent.com/developer/article/1662831)工具订阅，发布消息等和查询broker的状态；
 
 
 
 主题通配符说明：
 
-[Mosquitto 手册页 |Eclipse 蚊子](https://mosquitto.org/man/mosquitto-8.html)
+[Mosquitto 手册页 |Eclipse](https://mosquitto.org/man/mosquitto-8.html)
+
+以主题`a/b/c/d`为例，描述通配符 `+、#`;
 
 - 使用`#`订阅所有主题
 
@@ -32,7 +34,7 @@ mqtt服务器broker使用的一些注意事项。
   mosquitto_sub -t \#
   ```
 
-- 通配符 `+`：a/b/c/d
+- 通配符 `+`：
 
   - 以下订阅将匹配：
     - `a/b/c/d`
@@ -54,3 +56,6 @@ mqtt服务器broker使用的一些注意事项。
     - `a/b/#`
     - `a/b/c/#`
     - `+/b/c/#`
+
+请注意，通配符只能单独使用，因此`a/b+/c`订阅不是对通配符的有效使用。`#`字符只能用作订阅的最后一个字符。
+
