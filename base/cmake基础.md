@@ -322,6 +322,44 @@ add_compile_options(-std=c++11)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g")
 ```
 
+
+
+### 1.19 FetchContent
+
+如果cmake中使用FetchContent：`GetJsonStruct.cmake`
+
+```cmake
+include(FetchContent)
+message("Fetching json_struct...")
+
+set(json_struct_DOWNLOAD_URL
+    "https://github.com/jorgen/json_struct/archive/refs/tags/1.0.1.zip"
+    CACHE STRING "")
+
+FetchContent_Declare(
+    json_struct
+    URL ${json_struct_DOWNLOAD_URL}
+)
+
+FetchContent_GetProperties(json_struct)
+if(NOT json_struct_POPULATED)
+    FetchContent_MakeAvailable(json_struct)
+endif()
+
+# target: json_struct::json_struct
+```
+
+但是资源下载不了，可以手动下载后之后指定FETCHCONTENT_BASE_DIR来避免在cmake运行时再去下载
+
+```sh
+# CMakeLists.txt中引用GetJsonStruct.cmake去github下载资源
+include(GetJsonStruct)
+
+cmake .. -DFETCHCONTENT_BASE_DIR=../third_party/
+```
+
+
+
 ## 2. cmakelists.txt示例
 
 ```cmake
