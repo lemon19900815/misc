@@ -1,4 +1,6 @@
-# c++辅助类Helper
+# c++辅助类
+
+收集，整理C++的一些辅助类和函数接口。
 
 ## glog_helper.h
 
@@ -21,6 +23,8 @@
   }
   ```
 
+
+
 ## dump_helper.h
 
 - 通常部署在windows下的服务在宕机之后很难留下堆栈等信息，所以我们需要一些方式来辅助我们定位，查找问题
@@ -42,6 +46,8 @@
       return 0;
   }
   ```
+
+
 
 ## console_bar.h
 
@@ -70,4 +76,32 @@ int main() {
     return 0;
 }
 ```
-  
+
+
+
+## monitor.hpp
+
+Windows下cpu，mem，io数据监控信息，该信息搜集可用于服务器状态诊断（e.g. 是否有bug导致服务cpu等飙升）。
+
+接口如下，cpu统计信息主要参考 [psutil](https://github.com/giampaolo/psutil) 库相关实现。
+
+**注意：cpu统计信息与Windows任务管理器统计值存在一些差异。**
+
+**Roadmap：后期新增跨平台封装。**
+
+```c++
+namespace monitor
+{
+    // cpu total usage percent.
+    double get_cpu_usage();
+
+    // mem usage percent.
+    double get_mem_usage();
+
+    // network io sent&recv bytes.
+    void get_io_bytes(uint64_t& sent, uint64_t& recv);
+} // namespace monitor
+```
+
+
+
