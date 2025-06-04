@@ -17,8 +17,8 @@ namespace monitor
     // mem usage percent.
     double get_mem_usage();
 
-    // network io sent&recv bytes.
-    void get_io_bytes(uint64_t& sent, uint64_t& recv);
+    // io read&write bytes(net,file etc.).
+    void get_io_bytes(uint64_t& read, uint64_t& write);
 } // namespace monitor
 
 namespace monitor {
@@ -104,11 +104,11 @@ static double get_mem_usage() {
     return (status.dwTotalPhys - status.dwAvailPhys) * 100.0 / status.dwTotalPhys;
 }
 
-static void get_io_bytes(uint64_t& sent, uint64_t& recv) {
+static void get_io_bytes(uint64_t& read, uint64_t& write) {
     IO_COUNTERS io_counter;
     if (GetProcessIoCounters(GetCurrentProcess(), &io_counter)) {
-        sent = io_counter.WriteTransferCount;
-        recv = io_counter.ReadTransferCount;
+        read = io_counter.ReadTransferCount;
+        write = io_counter.WriteTransferCount;
     }
 }
 
