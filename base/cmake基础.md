@@ -511,5 +511,8 @@ cmake -G "Visual Studio 16 2019" ../ -B build -DCMAKE_BUILD_TYPE=Debug
 # 构建好生成器对应的工程后，直接使用cmake调用生成器执行编译
 # 采用这种方式可以避免不同生成器之间的差异，从而在cmake层面实现构建方式的统一
 cmake --build  [生成器工程目录，这里就是build]
+
+# 指定win32 或者x64平台
+cmake .. -G "Visual Studio 14 2015" -A x64|win32
 ```
 
