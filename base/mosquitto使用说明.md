@@ -19,6 +19,8 @@ mqtt服务器broker使用的一些注意事项。
 
 - 服务的状态可以使用[`mqtt.fx-1.7.1`](https://cloud.tencent.com/developer/article/1662831)工具订阅，发布消息等和查询broker的状态；
 
+- MQTTAsync_createWithOptions接口的clientId需要保持全局唯一，否则被挤掉线时，不会被MQTTAsync_connectionLost感知；
+
 
 
 主题通配符说明：
@@ -59,3 +61,10 @@ mqtt服务器broker使用的一些注意事项。
 
 请注意，通配符只能单独使用，因此`a/b+/c`订阅不是对通配符的有效使用。`#`字符只能用作订阅的最后一个字符。
 
+
+
+## mosquitto源码分析图
+
+[mosquitto源码分析图来源](https://github.com/hui6075/mosquitto-cluster/blob/master/benchmark/mosquitto_code_analyze.jpg)
+
+![](./img/mosquitto_code_analyze.jpg)
