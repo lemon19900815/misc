@@ -40,7 +40,7 @@
   
 - 查看系统内核：`uname –a`
 
-- Temporary failure in name resolution 错误解决方法:
+- Temporary failure in name resolution 错误解决方法（不能正常解析域名，只能使用IP）:
 
   ```
   vim /etc/resolv.conf
@@ -51,7 +51,26 @@
   nameserver 114.114.114.114
   ```
 
+  修改resolv.conf只是临时修改，每次重启之后会被还原，可以通过修改`/etc/systemd/resolved.conf`
+
+  ```
+  [Resolve]
+  DNS=8.8.8.8 114.114.114.114
+  #FallbackDNS=
+  #Domains=
+  #LLMNR=no
+  #MulticastDNS=no
+  #DNSSEC=no
+  #DNSOverTLS=no
+  #Cache=no-negative
+  #DNSStubListener=yes
+  #ReadEtcHosts=yes
+  ```
+
+  
+
 - gdb设置环境变量
+  
   - 命令参数 ` (gdb) set args XXXX`
   - 环境变量：`(gdb) set environment LD_LIBRARY_PATH=.`
   - 本地运行：`export LD_LIBRARY_PATH=.;$LD_LIBRARY_PATH`
