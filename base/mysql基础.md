@@ -159,6 +159,45 @@ mysql -uroot -p123456 -h127.0.0.1 --max_allowed_packet=512M source_db < db.sql
 
 
 
+### 1.4 mysql访问控制
+
+- **查看用户权限**
+
+  在 MySQL 中，你可以通过查询 `mysql.user` 表来查看用户的访问权限。使用以下 SQL 查询查看某个用户的权限：
+
+  ```sh
+  SELECT host, user FROM mysql.user;
+  ```
+
+  这将列出所有用户及其允许连接的主机（即 IP 地址或主机名）。如果一个用户的 `host` 字段是 `'%'`，则表示该用户可以从任何主机连接。
+
+- **查看某个用户的具体权限**
+
+  如果你想查看某个特定用户的详细权限，可以使用 `SHOW GRANTS` 命令：
+
+  ```sh
+  SHOW GRANTS FOR 'username'@'hostname';
+  ```
+
+- **调整用户权限**
+
+  默认情况下，MySQL 用户只允许从本地（`localhost`）连接。你需要为需要外部访问的用户授予权限。
+
+  假设你的用户名是 `user`，密码是 `password`，并且你希望从任何主机连接：
+
+  ```sh
+  // ip: e.g. 192.168.1.100
+  //    		%-所有ip均可访问
+  GRANT ALL PRIVILEGES ON *.* TO 'user'@'ip' IDENTIFIED BY 'password';
+  FLUSH PRIVILEGES;
+  ```
+
+- 
+
+
+
+
+
 ## 2. mysql优化建议（技巧）
 
 **扩展**：参考https://www.cnblogs.com/jajian/p/9758192.html
