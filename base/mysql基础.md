@@ -154,7 +154,13 @@ ref: [参考](https://blog.csdn.net/mysnsds/article/details/125313346)
 2. 如果db.sql存在二进制数据，在navicat工具中导入数据可能会出错；
 
 ```sh
-mysql -uroot -p123456 -h127.0.0.1 --max_allowed_packet=512M source_db < db.sql
+mysql -uroot -p123456 -h127.0.0.1 --max_allowed_packet=512M dest < source.sql
+```
+
+如果出现`ERROR 1366 (HY000) at line 226: Incorrect string value: '\xAE\xAF\xE8\xAF\xB7\xE6...' for column '...' at row 1`的错误，尝试指定默认编码方式进行数据导入：
+
+```sh
+mysql -uroot -p123456 --max_allowed_packet=512M --default-character-set=utf8 dest < source.sql
 ```
 
 
