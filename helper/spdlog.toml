@@ -1,0 +1,31 @@
+# level is optional for both sinks and loggers
+# level for error logging is 'err', not 'error'
+# _st => single threaded, _mt => multi threaded
+# syslog_sink is automatically thread-safe by default, no need for _mt suffix
+
+# max_size supports suffix
+# - T (terabyte)
+# - G (gigabyte)
+# - M (megabyte)
+# - K (kilobyte)
+# - or simply no suffix (byte)
+
+# check out https://github.com/gabime/spdlog/wiki/3.-Custom-formatting
+global_pattern = "[%Y-%m-%d %H:%M:%S.%e] [%n] [%^%l%$] [%t %s:%#] %v"
+
+[[sink]]
+name = "color_console_mt"
+type = "color_stdout_sink_mt"
+
+[[sink]]
+name = "misc_log"
+type = "rotating_file_sink_mt"
+base_filename = "logs/misc_log.log"
+max_size = "50M"
+max_files = 20
+level = "debug"
+
+[[logger]]
+name = "misc_log"
+sinks = ["color_console_mt", "misc_log"]
+level = "debug"
